@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <Platforms>AnyCPU;x86</Platforms>
+    <Configurations>DebugSqlite;ReleaseSqlite</Configurations>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == 'x86'">
+    <AssemblyName>$(MSBuildProjectName).x86</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'ReleaseSqlite'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+	<ItemGroup>
+		<Using Include="Devart.AI.McpServer.Properties.Resources" Alias="McpResources" />
+	</ItemGroup>
+	<ItemGroup>
+		<Using Include="Devart.AI.McpServer.AdoNet.Properties.Resources" Alias="AdoNetResources" />
+	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Devart.AI.McpServer.AdoNet\Devart.AI.McpServer.AdoNet.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Devart.Data.SQLite" />
+  </ItemGroup>
+</Project>

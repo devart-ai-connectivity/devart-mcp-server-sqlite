@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <Platforms>AnyCPU;x86</Platforms>
+    <Configurations>DebugSqlite;ReleaseSqlite</Configurations>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == 'x86'">
+    <AssemblyName>$(MSBuildProjectName).x86</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'ReleaseSqlite'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Using Include="Devart.AI.McpServer.Odbc.Properties.Resources" Alias="OdbcResources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Devart.AI.McpServer.Odbc\Devart.AI.McpServer.Odbc.csproj" />
+  </ItemGroup>
+</Project>

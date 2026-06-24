@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Common_DsnRequired" xml:space="preserve">
+    <value>DSN must be provided as the first argument.</value>
+  </data>
+  <data name="Common_ReadOnlyRequired" xml:space="preserve">
+    <value>ReadOnly must be provided as the second argument.</value>
+  </data>
+  <data name="Common_NoSqlStatementsProvided" xml:space="preserve">
+    <value>No SQL statements provided.</value>
+  </data>
+  <data name="TablesTool_Description" xml:space="preserve">
+    <value>Retrieves the list of tables in {0} as Markdown.</value>
+  </data>
+  <data name="TablesTool_OutputHeader" xml:space="preserve">
+    <value>## Tables</value>
+  </data>
+  <data name="ColumnsTool_Description" xml:space="preserve">
+    <value>Retrieves the list of columns for the specified table in {0} as Markdown.</value>
+  </data>
+  <data name="ColumnsTool_OutputHeader" xml:space="preserve">
+    <value>## Columns of the {0} table</value>
+  </data>
+  <data name="IndexesTool_Description" xml:space="preserve">
+    <value>Retrieves the list of indexes for the specified table in {0} as Markdown.</value>
+  </data>
+  <data name="IndexesTool_OutputHeader" xml:space="preserve">
+    <value>## Indexes of the {0} table</value>
+  </data>
+  <data name="RoutinesTool_Description" xml:space="preserve">
+    <value>Retrieves the list of stored procedures and functions with their parameters in {0} as Markdown.</value>
+  </data>
+  <data name="RoutinesTool_OutputHeader" xml:space="preserve">
+    <value>## Routines</value>
+  </data>
+  <data name="ForeignKeysTool_Description" xml:space="preserve">
+    <value>Retrieves the list of foreign keys for the specified table in {0} as Markdown.</value>
+  </data>
+  <data name="ForeignKeysTool_OutputHeader" xml:space="preserve">
+    <value>## Foreign keys of the {0} table</value>
+  </data>
+  <data name="AddRowTool_Description" xml:space="preserve">
+    <value>Inserts a new row into the specified table in {0} and returns the number of rows affected.</value>
+  </data>
+  <data name="AddRowTool_SuccessMessage" xml:space="preserve">
+    <value>Row added successfully. Rows affected: {0}.</value>
+  </data>
+  <data name="CountRowsTool_Description" xml:space="preserve">
+    <value>Retrieves the row count for the specified table in {0}.</value>
+  </data>
+  <data name="ExecuteReaderTool_Description" xml:space="preserve">
+    <value>Executes SQL-92 SELECT statements against {0} and returns the result set as Markdown.</value>
+  </data>
+  <data name="ExecuteReaderTool_InvalidStatementTypeError" xml:space="preserve">
+    <value>Statement {0} in your query is of type {1}, but only SELECT statements are allowed in this tool.</value>
+  </data>
+  <data name="ExecuteReaderTool_ConnectingMessage" xml:space="preserve">
+    <value>Connecting to data source...</value>
+  </data>
+  <data name="ExecuteReaderTool_ExecutingMessage" xml:space="preserve">
+    <value>Executing SELECT query...</value>
+  </data>
+  <data name="ExecuteReaderTool_InProgressMessage" xml:space="preserve">
+    <value>SELECT query in progress... ({0} seconds elapsed)</value>
+  </data>
+  <data name="ExecuteReaderTool_CompletedMessage" xml:space="preserve">
+    <value>Query completed successfully.</value>
+  </data>
+  <data name="ExecuteReaderTool_ResultSetHeader" xml:space="preserve">
+    <value>## Result Set {0}</value>
+  </data>
+  <data name="ExecuteNonQueryTool_Description" xml:space="preserve">
+    <value>Executes one or more SQL-92 statements in a single transaction against {0} and returns the number of rows affected. Supported operations: {1}.</value>
+  </data>
+  <data name="ExecuteNonQueryTool_InvalidStatementTypeError" xml:space="preserve">
+    <value>Statement {0} in your query is of type {1}, but only {2} statements are allowed in this tool.</value>
+  </data>
+  <data name="ExecuteNonQueryTool_SuccessMessage" xml:space="preserve">
+    <value>Query executed successfully. Rows affected: {0}.</value>
+  </data>
+  <data name="ExecuteRoutineTool_Description" xml:space="preserve">
+    <value>Executes a stored procedure or scalar function against {0}. Required value of 'routineType' parameter: {1}.</value>
+  </data>
+  <data name="ExecuteRoutineTool_InvalidRoutineTypeError" xml:space="preserve">
+    <value>{0} is invalid value of 'routineType' parameter. Required value: {1}.</value>
+  </data>
+  <data name="ExecuteRoutineTool_RoutineTypeNotSupported" xml:space="preserve">
+    <value>Routine type {0} is currently not supported.</value>
+  </data>
+  <data name="ExecuteRoutineTool_ProcedureSuccessMessage" xml:space="preserve">
+    <value>Procedure executed successfully.</value>
+  </data>
+  <data name="ExecuteRoutineTool_FunctionSuccessMessage" xml:space="preserve">
+    <value>Function executed successfully. Return value: {0}.</value>
+  </data>
+  <data name="ServerVersionTool_Description" xml:space="preserve">
+    <value>Returns the {0} server version.</value>
+  </data>
+  <data name="ServerVersionTool_OutputHeader" xml:space="preserve">
+    <value>## {0} Version: {1}</value>
+  </data>
+  <data name="InstructionsTool_Description" xml:space="preserve">
+    <value>Retrieves usage instructions for {0}.</value>
+  </data>
+  <data name="InstructionsTool_ResourceNotFound" xml:space="preserve">
+    <value>Instructions resource {0} not found.</value>
+  </data>
+  <data name="InstructionsTool_SqlEscapingInstructions" xml:space="preserve">
+    <value>In all generated SQL queries, use quotes to escape identifiers. For example:</value>
+  </data>
+  <data name="SqlFormatter_NameNullOrEmpty" xml:space="preserve">
+    <value>Name cannot be null or empty.</value>
+  </data>
+  <data name="JsonElementExtensions_UnsupportedJsonTypeError" xml:space="preserve">
+    <value>Unsupported JSON parameter value type {0}. Only primitive values are supported.</value>
+  </data>
+  <data name="Common_NoDataAvailable" xml:space="preserve">
+    <value>No data available.</value>
+  </data>
+  <data name="ColumnsTool_ColumnNameHeader" xml:space="preserve">
+    <value>Column Name</value>
+  </data>
+  <data name="ColumnsTool_DataTypeHeader" xml:space="preserve">
+    <value>Data Type</value>
+  </data>
+  <data name="ColumnsTool_SizeHeader" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="ColumnsTool_NullableHeader" xml:space="preserve">
+    <value>Nullable</value>
+  </data>
+  <data name="ColumnsTool_DefaultValueHeader" xml:space="preserve">
+    <value>Default Value</value>
+  </data>
+  <data name="ColumnsTool_DescriptionHeader" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="CountRowsTool_TableName" xml:space="preserve">
+    <value>Table Name</value>
+  </data>
+  <data name="CountRowsTool_RowsCount" xml:space="preserve">
+    <value>Rows Count</value>
+  </data>
+  <data name="TablesTool_TableSchema" xml:space="preserve">
+    <value>Schema</value>
+  </data>
+  <data name="TablesTool_TableName" xml:space="preserve">
+    <value>Table Name</value>
+  </data>
+  <data name="TablesTool_Remarks" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="RoutinesTool_ProcedureSchema" xml:space="preserve">
+    <value>Schema</value>
+  </data>
+  <data name="RoutinesTool_ProcedureName" xml:space="preserve">
+    <value>Routine</value>
+  </data>
+  <data name="RoutinesTool_ProcedureType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="RoutinesTool_ProcedureParameters" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="RoutinesTool_Remarks" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="IndexesTool_IndexName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="IndexesTool_ColumnName" xml:space="preserve">
+    <value>Column</value>
+  </data>
+  <data name="IndexesTool_OrdinalPosition" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="Common_ConfigFileInvalidProtocolType" xml:space="preserve">
+    <value>Invalid protocol type specified in the configuration file.</value>
+  </data>
+  <data name="Common_ConfigFileDnsRequired" xml:space="preserve">
+    <value>'dsn' in configuration file must be set to the existing ODBC Data Source Name.</value>
+  </data>
+  <data name="ForeignKeysTool_FkNameHeader" xml:space="preserve">
+    <value>Foreign key name</value>
+  </data>
+  <data name="ForeignKeysTool_FkColumnHeader" xml:space="preserve">
+    <value>Foreign key column</value>
+  </data>
+  <data name="ForeignKeysTool_PkSchemaHeader" xml:space="preserve">
+    <value>Referenced schema</value>
+  </data>
+  <data name="ForeignKeysTool_PkTableHeader" xml:space="preserve">
+    <value>Referenced table</value>
+  </data>
+  <data name="ForeignKeysTool_PkColumnHeader" xml:space="preserve">
+    <value>Referenced column</value>
+  </data>
+  <data name="ForeignKeysTool_UpdateRuleHeader" xml:space="preserve">
+    <value>Update rule</value>
+  </data>
+  <data name="ForeignKeysTool_DeleteRuleHeader" xml:space="preserve">
+    <value>Delete Rule</value>
+  </data>
+  <data name="PrimaryKeysTool_Description" xml:space="preserve">
+    <value>Retrieves the list of primary keys for the specified table in {0} as Markdown.</value>
+  </data>
+  <data name="PrimaryKeysTool_OutputHeader" xml:space="preserve">
+    <value>## Primary keys of the {0} table</value>
+  </data>
+  <data name="PrimaryKeysTool_PkNameHeader" xml:space="preserve">
+    <value>Primary key name</value>
+  </data>
+  <data name="PrimaryKeysTool_PkColumnHeader" xml:space="preserve">
+    <value>Primary key column</value>
+  </data>
+  <data name="Common_AppSettingsNotFound" xml:space="preserve">
+    <value>Application settings file not found: {0}.</value>
+  </data>
+  <data name="Common_AppSettingsMcpServerSectionRequired" xml:space="preserve">
+    <value>'McpServer' section in appsettings.json is required.</value>
+  </data>
+  <data name="CommandLine_ParamConfigName" xml:space="preserve">
+    <value>The name of the configuration to be used when starting the MCP server.</value>
+  </data>
+  <data name="CommandLine_ConfigFileNotFound" xml:space="preserve">
+    <value>Configuration file not found: {0}.</value>
+  </data>
+  <data name="CommandLine_CommandRunMcp" xml:space="preserve">
+    <value>Run MCP Server</value>
+  </data>
+  <data name="CommandLine_RootCommand" xml:space="preserve">
+    <value>Devart AI MCP Server (ODBC)</value>
+  </data>
+  <data name="CommandLine_LogShutdown" xml:space="preserve">
+    <value>MCP server shutdown requested</value>
+  </data>
+  <data name="CommandLine_LogConfigurationError" xml:space="preserve">
+    <value>Configuration error: {0}</value>
+  </data>
+  <data name="CommandLine_LogUnhandledError" xml:space="preserve">
+    <value>Unhandled error during MCP server execution.</value>
+  </data>
+  <data name="CommandLine_LogStartWithConfig" xml:space="preserve">
+    <value>Starting MCP server with config: {0}</value>
+  </data>
+  <data name="CommandLine_LogStopped" xml:space="preserve">
+    <value>MCP server stopped gracefully</value>
+  </data>
+  <data name="CommandLine_VerbosityOption" xml:space="preserve">
+    <value>Output verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].</value>
+  </data>
+  <data name="IndexesTool_Columns" xml:space="preserve">
+    <value>Columns</value>
+  </data>
+  <data name="CommandLine_CommandConfigMcp" xml:space="preserve">
+    <value>Displays the configuration window for the MCP Server</value>
+  </data>
+  <data name="ConfigTool_Description" xml:space="preserve">
+    <value>Opens the configuration window for {0}.</value>
+  </data>
+  <data name="IndexesTool_IndexType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Common_ConfigFileInvalid" xml:space="preserve">
+    <value>Invalid configuration file.</value>
+  </data>
+  <data name="CommandLine_OptionFile" xml:space="preserve">
+    <value>Specifies the full path to the configuration file. If the option is omitted or the specified file does not exist, the configuration file is searched first in the server folder, then in the &lt;ProgramData&gt; folder.</value>
+  </data>
+  <data name="Common_ConfigInvalid" xml:space="preserve">
+    <value>Invalid configuration: {0}</value>
+  </data>
+</root>

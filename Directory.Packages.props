@@ -1,0 +1,23 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    <PackageVersion Include="ModelContextProtocol.AspNetCore" Version="1.1.0" />
+    <PackageVersion Include="System.CommandLine" Version="2.0.5" />
+    <PackageVersion Include="System.Data.Odbc" Version="8.0.1" />
+    <PackageVersion Include="System.Management" Version="8.0.0" />
+    <PackageVersion Include="Devart.Data.PostgreSql" Version="[9.1.72, )" />
+    <PackageVersion Include="Devart.Data.SQLite" Version="[7.1.72, )" />
+    <PackageVersion Include="Devart.Data.Oracle" Version="[11.1.72, )" />
+    <PackageVersion Include="Devart.Data.SqlServer" Version="[6.1.72, )" />
+    <PackageVersion Include="Devart.Data.MySql" Version="[10.1.72, )" />
+    <PackageVersion Include="Devart.Data.Salesforce" Version="[6.1.72, )" />
+    <PackageVersion Include="Devart.Data.Dynamics" Version="[3.1.72, )" />
+    <PackageVersion Include="Devart.Data.QuickBooks" Version="[3.1.72, )" />
+    <PackageVersion Include="Devart.Data.ExactTarget" Version="[3.1.72, )" />
+    <PackageVersion Include="Devart.Data.Zoho" Version="[3.1.72, )" />
+    <PackageVersion Include="Devart.Data.ZohoDesk" Version="[2.1.72, )" />
+  </ItemGroup>
+</Project>

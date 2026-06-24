@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU;x86</Platforms>
+  </PropertyGroup>
+	<ItemGroup>
+		<Using Include="Devart.AI.McpServer.Properties.Resources" Alias="McpResources" />
+	</ItemGroup>
+	<ItemGroup>
+    <Using Include="Devart.AI.McpServer.Odbc.Properties.Resources" Alias="OdbcResources" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Data.Odbc" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Embedded\Instructions.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Devart.AI.McpServer\Devart.AI.McpServer.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
