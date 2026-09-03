@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="OdbcTools.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -6,8 +6,8 @@
 // </copyright>
 // --------------------------------------------------------------------------
 
-using Devart.AI.McpServer.Tools;
 using Devart.AI.McpServer.Odbc.Tools;
+using Devart.AI.McpServer.Tools;
 
 namespace Devart.AI.McpServer.Odbc
 {

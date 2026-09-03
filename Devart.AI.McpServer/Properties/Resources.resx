@@ -234,6 +234,15 @@
   <data name="Common_NoDataAvailable" xml:space="preserve">
     <value>No data available.</value>
   </data>
+  <data name="Common_MetadataColumnsMissing" xml:space="preserve">
+    <value>The data provider does not expose the required column(s) {0} in the "{1}" metadata collection.</value>
+  </data>
+  <data name="Common_MetadataCollectionNotReturned" xml:space="preserve">
+    <value>The data provider returned no metadata for the "{0}" collection.</value>
+  </data>
+  <data name="Common_ResultColumnsMissing" xml:space="preserve">
+    <value>The query result does not contain the required column(s) {0}.</value>
+  </data>
   <data name="ColumnsTool_ColumnNameHeader" xml:space="preserve">
     <value>Column Name</value>
   </data>
@@ -337,16 +346,19 @@
     <value>'McpServer' section in appsettings.json is required.</value>
   </data>
   <data name="CommandLine_ParamConfigName" xml:space="preserve">
-    <value>The name of the configuration to be used when starting the MCP server.</value>
+    <value>The name of the configuration to be used when starting the MCP server. If it is omitted, the connection string is read from the {0} environment variable.</value>
   </data>
   <data name="CommandLine_ConfigFileNotFound" xml:space="preserve">
     <value>Configuration file not found: {0}.</value>
+  </data>
+  <data name="CommandLine_ConnectionVariableNotSet" xml:space="preserve">
+    <value>The configuration name is not specified and the {0} environment variable is not set. Specify the configuration name or set {0} to the connection string.</value>
   </data>
   <data name="CommandLine_CommandRunMcp" xml:space="preserve">
     <value>Run MCP Server</value>
   </data>
   <data name="CommandLine_RootCommand" xml:space="preserve">
-    <value>Devart AI MCP Server (ODBC)</value>
+    <value>Devart AI MCP Server</value>
   </data>
   <data name="CommandLine_LogShutdown" xml:space="preserve">
     <value>MCP server shutdown requested</value>
@@ -370,7 +382,7 @@
     <value>Columns</value>
   </data>
   <data name="CommandLine_CommandConfigMcp" xml:space="preserve">
-    <value>Displays the configuration window for the MCP Server</value>
+    <value>Manages the MCP Server configurations: list, add, edit, delete</value>
   </data>
   <data name="ConfigTool_Description" xml:space="preserve">
     <value>Opens the configuration window for {0}.</value>
@@ -386,5 +398,80 @@
   </data>
   <data name="Common_ConfigInvalid" xml:space="preserve">
     <value>Invalid configuration: {0}</value>
+  </data>
+  <data name="CommandLine_CommandConfigAdd" xml:space="preserve">
+    <value>Adds a new configuration to the MCP Server configuration file</value>
+  </data>
+  <data name="CommandLine_CommandConfigEdit" xml:space="preserve">
+    <value>Modifies an existing configuration in the MCP Server configuration file</value>
+  </data>
+  <data name="CommandLine_CommandConfigDelete" xml:space="preserve">
+    <value>Removes a configuration from the MCP Server configuration file</value>
+  </data>
+  <data name="CommandLine_ParamProfileName" xml:space="preserve">
+    <value>The name of the configuration to be added, modified, or removed.</value>
+  </data>
+  <data name="CommandLine_OptionProtocolType" xml:space="preserve">
+    <value>The protocol type used by the configuration. Allowed values are stdio and http.</value>
+  </data>
+  <data name="CommandLine_OptionConnectionString" xml:space="preserve">
+    <value>The connection string used by the configuration.</value>
+  </data>
+  <data name="CommandLine_InvalidProtocolType" xml:space="preserve">
+    <value>Argument '{0}' not recognized. Must be one of: 'stdio', 'http'</value>
+  </data>
+  <data name="CommandLine_ConfigProfileNameRequired" xml:space="preserve">
+    <value>The configuration name must not be empty.</value>
+  </data>
+  <data name="CommandLine_ConfigProfileExists" xml:space="preserve">
+    <value>Configuration '{0}' already exists in {1}.</value>
+  </data>
+  <data name="CommandLine_ConfigProfileNotFound" xml:space="preserve">
+    <value>Configuration '{0}' not found in {1}.</value>
+  </data>
+  <data name="CommandLine_ConfigProfileAdded" xml:space="preserve">
+    <value>Configuration '{0}' added to {1}.</value>
+  </data>
+  <data name="CommandLine_ConfigProfileUpdated" xml:space="preserve">
+    <value>Configuration '{0}' updated in {1}.</value>
+  </data>
+  <data name="CommandLine_ConfigProfileDeleted" xml:space="preserve">
+    <value>Configuration '{0}' deleted from {1}.</value>
+  </data>
+  <data name="CommandLine_ConfigNothingToUpdate" xml:space="preserve">
+    <value>Nothing to update. Specify at least one of --protocol-type, --http-address, --http-port, --http-route-prefix, and --connection-string.</value>
+  </data>
+  <data name="CommandLine_OptionHttpPort" xml:space="preserve">
+    <value>The port the MCP server listens on when the protocol type is http.</value>
+  </data>
+  <data name="CommandLine_InvalidHttpPort" xml:space="preserve">
+    <value>Argument '{0}' not recognized. The port must be an integer between {1} and {2}.</value>
+  </data>
+  <data name="CommandLine_CommandConfigList" xml:space="preserve">
+    <value>Lists the configurations available in the MCP Server configuration file</value>
+  </data>
+  <data name="CommandLine_ConfigListEmpty" xml:space="preserve">
+    <value>No configurations found in {0}.</value>
+  </data>
+  <data name="CommandLine_ConfigListName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="CommandLine_ConfigListProtocolType" xml:space="preserve">
+    <value>Protocol type</value>
+  </data>
+  <data name="CommandLine_ConfigListHttpPort" xml:space="preserve">
+    <value>HTTP port</value>
+  </data>
+  <data name="CommandLine_OptionHttpAddress" xml:space="preserve">
+    <value>The address the MCP server listens on when the protocol type is http.</value>
+  </data>
+  <data name="CommandLine_OptionHttpRoutePrefix" xml:space="preserve">
+    <value>The route prefix the MCP server is served under when the protocol type is http.</value>
+  </data>
+  <data name="CommandLine_ConfigListHttpAddress" xml:space="preserve">
+    <value>HTTP address</value>
+  </data>
+  <data name="CommandLine_ConfigListHttpRoutePrefix" xml:space="preserve">
+    <value>HTTP route prefix</value>
   </data>
 </root>

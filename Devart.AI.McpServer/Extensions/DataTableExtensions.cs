@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="DataTableExtensions.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -17,10 +17,10 @@ namespace Devart.AI.McpServer.Extensions
     public static string ToMarkdown(this DataTable table,
       string[] columns = null,
       Predicate<DataRow> skipPredicate = null)
-      => ToMarkdown(table, columns?.Select(c => (c, c)).ToArray(), skipPredicate);
+      => ToMarkdown(table, columns?.Select(c => new MetadataColumn(c, c)).ToArray(), skipPredicate);
 
     public static string ToMarkdown(this DataTable table,
-      (string name, string alias)[] columnsMapping = null,
+      MetadataColumn[] columnsMapping = null,
       Predicate<DataRow> skipPredicate = null)
       => MarkdownTableFormatter.FormatDataTable(table, columnsMapping, skipPredicate);
   }

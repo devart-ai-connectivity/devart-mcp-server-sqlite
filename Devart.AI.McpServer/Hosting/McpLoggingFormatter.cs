@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="McpLoggingFormatter.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -63,10 +63,7 @@ namespace Devart.AI.McpServer.Hosting
       }
     }
 
-    private static void WriteIndented(TextWriter writer, string message)
-    {
-      writer.Write(message.Replace(Environment.NewLine, NewLineWithMessagePadding));
-    }
+    private static void WriteIndented(TextWriter writer, string message) => writer.Write(message.Replace(Environment.NewLine, NewLineWithMessagePadding));
 
     private static string GetLogLevelString(LogLevel logLevel) => logLevel switch
     {

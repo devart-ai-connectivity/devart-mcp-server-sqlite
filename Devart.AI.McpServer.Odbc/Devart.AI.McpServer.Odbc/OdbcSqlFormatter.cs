@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="OdbcSqlFormatter.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -29,5 +29,15 @@ namespace Devart.AI.McpServer.Odbc
       }
       return fullName;
     }
+
+    public override string FormatParameterName(int index) => "?";
+
+    public override string FormatParameterPlaceholder(int index) => "?";
+
+    public override string FormatCallProcedure(string procedureFullName, int parametersCount)
+      => $"{{CALL {procedureFullName}({FormatPlaceholders(parametersCount)})}}";
+
+    public override string FormatCallFunction(string functionFullName, int parametersCount)
+      => $"{{? = CALL {functionFullName}({FormatPlaceholders(parametersCount)})}}";
   }
 }

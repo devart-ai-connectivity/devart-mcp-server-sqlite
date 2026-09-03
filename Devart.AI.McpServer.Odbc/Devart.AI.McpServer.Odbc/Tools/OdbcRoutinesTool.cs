@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="OdbcRoutinesTool.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -14,19 +14,23 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
+using Devart.AI.McpServer.Extensions;
 using Devart.AI.McpServer.Interfaces;
 using Devart.AI.McpServer.Tools;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Devart.AI.McpServer.Odbc.Tools
 {
   internal sealed class OdbcRoutinesTool(McpConfiguration serverConfiguration) : RoutinesTool(serverConfiguration)
   {
+    private const char GroupNumberSeparator = ';';
+
+
     protected override async Task<DataTable> GetMetadataTable(
-      DbConnection connection, 
-      string schema, 
-      string tableName, 
-      IServiceProvider services, 
+      DbConnection connection,
+      string schema,
+      string tableName,
+      IServiceProvider services,
       CancellationToken cancellationToken)
     {
       var metadata = services.GetService<IMetadata>();
@@ -35,20 +39,19 @@ namespace Devart.AI.McpServer.Odbc.Tools
         cancellationToken
       ).ConfigureAwait(false);
 
-      var resultTable = await base.GetMetadataTable(connection, schema, tableName, services, cancellationToken).ConfigureAwait(false);
-
-      resultTable.Columns.Add(OdbcConstants.ProcedureSchema, typeof(string));
-      resultTable.Columns.Add(OdbcConstants.ProcedureName, typeof(string));
-      resultTable.Columns.Add(OdbcConstants.ProcedureType, typeof(string));
-      resultTable.Columns.Add(OdbcConstants.ProcedureParameters, typeof(string));
-      resultTable.Columns.Add(OdbcConstants.Remarks, typeof(string));
+      var resultTable = CreateAnswerTable(
+        OdbcConstants.ProcedureSchema,
+        OdbcConstants.ProcedureName,
+        OdbcConstants.ProcedureType,
+        OdbcConstants.ProcedureParameters,
+        OdbcConstants.Remarks);
 
       foreach (DataRow routine in routines.Rows)
       {
-        var routineSchema = routine[OdbcConstants.ProcedureSchema]?.ToString();
-        var routineName = routine[OdbcConstants.ProcedureName]?.ToString();
-        var routineTypeRaw = routine[OdbcConstants.ProcedureType]?.ToString();
-        var remarks = routine[OdbcConstants.Remarks]?.ToString();
+        var routineSchema = routine.TryGetString(OdbcConstants.ProcedureSchema);
+        var routineName = TrimGroupNumber(routine.TryGetString(OdbcConstants.ProcedureName));
+        var routineTypeRaw = routine.TryGetString(OdbcConstants.ProcedureType);
+        var remarks = routine.TryGetString(OdbcConstants.Remarks);
 
         if (IsIgnoredSchema(routineSchema))
         {
@@ -73,6 +76,12 @@ namespace Devart.AI.McpServer.Odbc.Tools
       }
 
       return resultTable;
+    }
+
+    private static string TrimGroupNumber(string routineName)
+    {
+      var separator = routineName?.IndexOf(GroupNumberSeparator) ?? -1;
+      return separator < 0 ? routineName : routineName[..separator];
     }
 
     private static string GetRoutineType(string routineTypeRaw) => routineTypeRaw switch

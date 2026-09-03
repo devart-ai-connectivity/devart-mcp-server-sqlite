@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="OdbcSqliteForeignKeysTool.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -6,30 +6,31 @@
 // </copyright>
 // --------------------------------------------------------------------------
 
-using Devart.AI.McpServer.Interfaces;
-using Devart.AI.McpServer.Tools;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Data;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
+using Devart.AI.McpServer.Interfaces;
+using Devart.AI.McpServer.Tools;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Devart.AI.McpServer.Odbc.Sqlite.Tools
 {
   internal sealed class OdbcSqliteForeignKeysTool(McpConfiguration serverConfiguration) : ForeignKeysTool(serverConfiguration)
   {
     protected override async Task<DataTable> GetMetadataTable(
-      DbConnection connection, 
-      string schema, 
-      string tableName, 
-      IServiceProvider services, 
+      DbConnection connection,
+      string schema,
+      string tableName,
+      IServiceProvider services,
       CancellationToken cancellationToken)
     {
       var database = services.GetRequiredService<IDatabase>();
       var commandHelper = services.GetRequiredService<ICommandHelper>();
 
-      DataTable resultTable = new(tableName) {
+      DataTable resultTable = new(tableName)
+      {
         Locale = System.Globalization.CultureInfo.InvariantCulture
       };
 

@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="SqlFormatterSettings.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED

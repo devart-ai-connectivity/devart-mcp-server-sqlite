@@ -61,11 +61,47 @@ namespace Devart.AI.McpServer.Odbc.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manages the MCP Server configurations: list, add, edit, delete; with no subcommand, displays the configuration window.
+        /// </summary>
+        public static string CommandLine_CommandConfigOdbc {
+            get {
+                return ResourceManager.GetString("CommandLine_CommandConfigOdbc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Devart AI MCP Server (ODBC).
+        /// </summary>
+        public static string CommandLine_RootCommand {
+            get {
+                return ResourceManager.GetString("CommandLine_RootCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Either the &apos;dsn&apos; or the &apos;connection_string&apos; parameters must be present in the configuration file..
         /// </summary>
         public static string Common_ConfigFileDsnRequired {
             get {
                 return ResourceManager.GetString("Common_ConfigFileDsnRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apparently, {0} is not installed. You can download the driver at {1}..
+        /// </summary>
+        public static string Connection_DriverNotInstalled {
+            get {
+                return ResourceManager.GetString("Connection_DriverNotInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ODBC driver is not supported. This server works with {0}. Check the driver specified in the data source. You can download the required driver at {1}..
+        /// </summary>
+        public static string Connection_UnsupportedDriver {
+            get {
+                return ResourceManager.GetString("Connection_UnsupportedDriver", resourceCulture);
             }
         }
     }

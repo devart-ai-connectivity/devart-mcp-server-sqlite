@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="McpConfiguration.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -47,6 +47,15 @@ namespace Devart.AI.McpServer
 
     [JsonPropertyName("HttpPort")]
     public int HttpPort { get; init; }
+
+    [JsonPropertyName("HttpAddress")]
+    public string HttpAddress { get; init; }
+
+    [JsonPropertyName("HttpScheme")]
+    public string HttpScheme { get; init; }
+
+    [JsonPropertyName("HttpRoutePrefix")]
+    public string HttpRoutePrefix { get; init; }
 
     [JsonIgnore]
     public string ToolPrefix { get; init; }
@@ -98,34 +107,48 @@ namespace Devart.AI.McpServer
 
       var connection = connections.EnumerateArray()
         .FirstOrDefault(e => e.TryGetProperty(nameof(Name), out var n) && string.Equals(n.GetString(), configName, StringComparison.OrdinalIgnoreCase));
-      if (connection.ValueKind == JsonValueKind.Undefined)
-      {
-        throw new ArgumentException(string.Format(McpResources.Common_ConfigInvalid, configName));
-      }
+      return connection.ValueKind == JsonValueKind.Undefined
+        ? throw new ArgumentException(string.Format(McpResources.Common_ConfigInvalid, configName))
+        : Create(connection, appSettings);
+    }
 
-      var config = FromJson(connection);
+    public McpConfiguration Create(JsonElement connection, McpAppSettings appSettings)
+      => FromJson(connection).Configure(appSettings);
 
-      return config with
-      {
-        ToolPrefix = string.IsNullOrEmpty(appSettings.ToolPrefix) ? config.Name.Replace(" ", "_") : appSettings.ToolPrefix,
-        ServerName = appSettings.ServerName,
-        SourceName = appSettings.SourceName,
-        SourceDisplayName = appSettings.OnPremise
+    protected virtual McpConfiguration Configure(McpAppSettings appSettings) => this with
+    {
+      ToolPrefix = string.IsNullOrEmpty(appSettings.ToolPrefix) ? Name.Replace(" ", "_") : appSettings.ToolPrefix,
+      ServerName = appSettings.ServerName,
+      SourceName = appSettings.SourceName,
+      SourceDisplayName = appSettings.OnPremise
           ? $"the {appSettings.SourceName} database"
           : appSettings.SourceName,
-        OnPremise = appSettings.OnPremise,
-        NonQueryOperations = appSettings.NonQueryOperations != null
+      OnPremise = appSettings.OnPremise,
+      NonQueryOperations = appSettings.NonQueryOperations != null
           ? [.. appSettings.NonQueryOperations.Select(s => Enum.Parse<StatementType>(s, ignoreCase: true))]
           : [],
-        SupportedRoutines = appSettings.Routines != null
+      SupportedRoutines = appSettings.Routines != null
           ? [.. appSettings.Routines]
           : [],
-        IgnoreSchemas = appSettings.IgnoreSchemas != null
+      IgnoreSchemas = appSettings.IgnoreSchemas != null
           ? [.. appSettings.IgnoreSchemas]
           : null,
-        OpenQuote = appSettings.SqlFormatter?.OpenQuote ?? "\"",
-        CloseQuote = appSettings.SqlFormatter?.CloseQuote ?? "\"",
-      };
+      OpenQuote = appSettings.SqlFormatter?.OpenQuote ?? "\"",
+      CloseQuote = appSettings.SqlFormatter?.CloseQuote ?? "\"",
+      HttpAddress = string.IsNullOrEmpty(HttpAddress) ? "localhost" : HttpAddress,
+      HttpScheme = string.IsNullOrEmpty(HttpScheme) ? "http" : HttpScheme,
+      HttpRoutePrefix = NormalizeRoutePrefix(HttpRoutePrefix),
+    };
+
+    protected static string NormalizeRoutePrefix(string value)
+    {
+      if (string.IsNullOrWhiteSpace(value))
+      {
+        return string.Empty;
+      }
+
+      var segments = value.Split('/', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+      return segments.Length == 0 ? string.Empty : "/" + string.Join('/', segments);
     }
   }
 }

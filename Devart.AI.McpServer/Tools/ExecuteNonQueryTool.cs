@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="ExecuteNonQueryTool.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -11,9 +11,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
+using Devart.AI.McpServer.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using ModelContextProtocol;
-using Devart.AI.McpServer.Interfaces;
 
 namespace Devart.AI.McpServer.Tools
 {
@@ -27,7 +27,7 @@ namespace Devart.AI.McpServer.Tools
       => string.Format(
         McpResources.ExecuteNonQueryTool_Description,
         ServerConfiguration.SourceDisplayName,
-        string.Join(", ", allowedOperations).ToUpper()
+        string.Join(", ", this.allowedOperations).ToUpper()
       );
 
     protected override Delegate ExecuteDefinition => Execute;
@@ -36,7 +36,7 @@ namespace Devart.AI.McpServer.Tools
       [Description("One or more SQL-92 statements with supported operations.")]
       string sql,
       IServiceProvider services,
-      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(sql, services, cancellationToken));
+      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(sql, services, cancellationToken), services);
 
     protected virtual async Task<string> ExecuteAsync(
       string sql,
@@ -53,14 +53,14 @@ namespace Devart.AI.McpServer.Tools
 
       for (int i = 0; i < statements.Length; i++)
       {
-        if (!allowedOperations.Contains(statements[i].Type))
+        if (!this.allowedOperations.Contains(statements[i].Type))
         {
           throw new McpProtocolException(
             string.Format(
               McpResources.ExecuteNonQueryTool_InvalidStatementTypeError,
               i + 1,
               statements[i].Type.ToString().ToUpper(),
-              string.Join("', '", allowedOperations).ToUpper()
+              string.Join("', '", this.allowedOperations).ToUpper()
             ),
             McpErrorCode.InvalidParams
           );

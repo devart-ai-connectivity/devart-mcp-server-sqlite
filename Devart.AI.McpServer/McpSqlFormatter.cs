@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="McpSqlFormatter.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -30,13 +30,17 @@ namespace Devart.AI.McpServer
       return fullName;
     }
 
-    public string FormatCallProcedure(string procedureFullName, int parametersCount)
-      => $"{{CALL {procedureFullName}({GetPlaceholders(parametersCount)})}}";
+    public virtual string FormatParameterName(int index) => $"p{index}";
 
-    public string FormatCallFunction(string functionFullName, int parametersCount)
-      => $"{{? = CALL {functionFullName}({GetPlaceholders(parametersCount)})}}";
+    public virtual string FormatParameterPlaceholder(int index) => $":{FormatParameterName(index)}";
 
-    private static string GetPlaceholders(int parametersCount)
-      => string.Join(", ", Enumerable.Repeat("?", parametersCount));
+    public virtual string FormatCallProcedure(string procedureFullName, int parametersCount)
+      => $"CALL {procedureFullName}({FormatPlaceholders(parametersCount)})";
+
+    public virtual string FormatCallFunction(string functionFullName, int parametersCount)
+      => $"SELECT {functionFullName}({FormatPlaceholders(parametersCount)})";
+
+    protected string FormatPlaceholders(int parametersCount)
+      => string.Join(", ", Enumerable.Range(0, parametersCount).Select(FormatParameterPlaceholder));
   }
 }

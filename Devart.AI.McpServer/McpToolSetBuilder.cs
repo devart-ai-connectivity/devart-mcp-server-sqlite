@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="McpToolSetBuilder.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -13,16 +13,16 @@ using ModelContextProtocol.Server;
 
 namespace Devart.AI.McpServer
 {
-  public sealed class McpToolSetBuilder(McpConfiguration configuration)
+  public sealed class McpToolSetBuilder(McpConfiguration config)
   {
-    private readonly McpConfiguration _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+    private readonly McpConfiguration configuration = config ?? throw new ArgumentNullException(nameof(config));
 
-    private readonly List<McpServerTool> _tools = [];
+    private readonly List<McpServerTool> toolList = [];
 
     public McpToolSetBuilder Add(McpServerTool tool)
     {
       ArgumentNullException.ThrowIfNull(tool);
-      _tools.Add(tool);
+      this.toolList.Add(tool);
       return this;
     }
 
@@ -47,6 +47,6 @@ namespace Devart.AI.McpServer
     }
 
     public List<McpServerTool> Build()
-      => [.. _tools.Where(tool => tool is not McpTool mcpTool || mcpTool.IsApplicable(_configuration))];
+      => [.. this.toolList.Where(tool => tool is not McpTool mcpTool || mcpTool.IsApplicable(this.configuration))];
   }
 }

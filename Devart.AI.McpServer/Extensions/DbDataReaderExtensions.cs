@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="DbDataReaderExtensions.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -23,7 +23,7 @@ namespace Devart.AI.McpServer.Extensions
 
     public static Task<string> ToMarkdownAsync(
       this DbDataReader reader,
-      (string name, string alias)[] columnsMapping = null,
+      MetadataColumn[] columnsMapping = null,
       Predicate<object[]> skipPredicate = null,
       CancellationToken cancellationToken = default)
       => MarkdownTableFormatter.FormatDataReaderAsync(reader, columnsMapping, skipPredicate, cancellationToken);
@@ -43,13 +43,17 @@ namespace Devart.AI.McpServer.Extensions
 
     private static DataTable NewDataTableFromReader(DbDataReader reader, out object[] values, string tableName)
     {
-      DataTable resultTable = new(tableName) {
+      DataTable resultTable = new(tableName)
+      {
         Locale = System.Globalization.CultureInfo.InvariantCulture
       };
-      DataTable schemaTable = reader.GetSchemaTable()!;
-      foreach (DataRow row in schemaTable.Rows)
+      using DataTable schemaTable = reader.GetSchemaTable();
+      if (schemaTable is not null)
       {
-        resultTable.Columns.Add(row["ColumnName"] as string, (Type)row["DataType"]);
+        foreach (DataRow row in schemaTable.Rows)
+        {
+          resultTable.Columns.Add(row["ColumnName"] as string, (Type)row["DataType"]);
+        }
       }
 
       values = new object[resultTable.Columns.Count];

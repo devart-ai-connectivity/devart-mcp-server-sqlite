@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="McpShutdownEndpointExtensions.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED

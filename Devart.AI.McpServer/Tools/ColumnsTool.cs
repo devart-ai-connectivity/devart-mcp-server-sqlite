@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="ColumnsTool.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -12,9 +12,9 @@ using System.Data;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Devart.AI.McpServer.Extensions;
 using Devart.AI.McpServer.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Devart.AI.McpServer.Tools
 {
@@ -30,14 +30,14 @@ namespace Devart.AI.McpServer.Tools
       DbConnection connection,
       string schema,
       string tableName,
-      IServiceProvider services, 
+      IServiceProvider services,
       CancellationToken cancellationToken)
     {
-      var metadata = services.GetService<IMetadata>();
+      var metadata = services.GetRequiredService<IMetadata>();
       return await connection
         .GetSchemaAsync(
           metadata.ColumnsCollectionName,
-          [metadata.DatabaseName(connection.Database), metadata.SchemaName(schema), tableName],
+          metadata.ColumnsRestrictions(connection.Database, schema, tableName),
           cancellationToken)
         .ConfigureAwait(false);
     }
@@ -48,7 +48,7 @@ namespace Devart.AI.McpServer.Tools
       [Description("Name of the table.")]
       string tableName,
       IServiceProvider services,
-      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(schema, tableName, services, cancellationToken));
+      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(schema, tableName, services, cancellationToken), services);
 
     protected virtual async Task<string> ExecuteAsync(
         string schema,
@@ -67,7 +67,7 @@ namespace Devart.AI.McpServer.Tools
         () => GetMetadataTable(connection, schema, tableName, services, cancellationToken)
       ).ConfigureAwait(false);
 
-      var markdownTable = table?.ToMarkdown(metadata.ColumnsColumnsMapping);
+      var markdownTable = RequireMetadataTable(table, () => metadata.ColumnsCollectionName).ToMarkdown(metadata.ColumnsColumnsMapping);
       var quotedFullName = formatter.FormatName(schema, tableName, configuration, connection);
       var header = string.Format(McpResources.ColumnsTool_OutputHeader, quotedFullName);
 

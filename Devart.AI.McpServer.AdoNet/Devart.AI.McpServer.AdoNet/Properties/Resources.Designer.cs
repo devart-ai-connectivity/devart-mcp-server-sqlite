@@ -68,5 +68,23 @@ namespace Devart.AI.McpServer.AdoNet.Properties {
                 return ResourceManager.GetString("Common_ConfigFileConnectionStringRequired", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Devart AI MCP Server (ADO.NET).
+        /// </summary>
+        public static string CommandLine_RootCommand {
+            get {
+                return ResourceManager.GetString("CommandLine_RootCommand", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Metadata for this data source is not configured. The server must register its own IMetadata implementation..
+        /// </summary>
+        public static string AdoNetMetadata_NotConfigured {
+            get {
+                return ResourceManager.GetString("AdoNetMetadata_NotConfigured", resourceCulture);
+            }
+        }
     }
 }

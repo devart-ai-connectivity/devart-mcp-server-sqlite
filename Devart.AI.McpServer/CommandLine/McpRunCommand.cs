@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="McpRunCommand.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -11,14 +11,15 @@ using System.Collections.Generic;
 using System.CommandLine;
 using System.IO;
 using System.Net.Sockets;
+using System.Security;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Devart.AI.McpServer.Hosting;
+using Devart.AI.McpServer.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Devart.AI.McpServer.Interfaces;
-using Devart.AI.McpServer.Hosting;
 
 namespace Devart.AI.McpServer.CommandLine
 {
@@ -27,7 +28,10 @@ namespace Devart.AI.McpServer.CommandLine
     private const string ConfigArgument = "config";
     private const string FileOption = "--file";
 
-    protected const string ConfigFileName = "mcpserver.json";
+    private const string ConnectionVariablePrefix = "DEVART_MCP_";
+    private const string ConnectionVariableSuffix = "_CONNECTION";
+    private const string VariablePlaceholderStart = "${";
+    private const char VariablePlaceholderEnd = '}';
 
     private const int ExitSuccess = 0;
     private const int ExitGeneralError = 1;
@@ -37,14 +41,15 @@ namespace Devart.AI.McpServer.CommandLine
     private static readonly Dictionary<McpProtocolType, IMcpHostRunner> Runners = new()
     {
       [McpProtocolType.Stdio] = new StdioMcpHostRunner(),
-      [McpProtocolType.Http]  = new HttpMcpHostRunner(),
+      [McpProtocolType.Http] = new HttpMcpHostRunner(),
     };
 
     protected McpRunCommand() : base("run", "-r", McpResources.CommandLine_CommandRunMcp)
     {
       Arguments.Add(new Argument<string>(ConfigArgument)
       {
-        Description = McpResources.CommandLine_ParamConfigName
+        Description = string.Format(McpResources.CommandLine_ParamConfigName, ConnectionVariableName),
+        Arity = ArgumentArity.ZeroOrOne
       });
       Option<string> fileOption = new(FileOption, "-f")
       {
@@ -69,7 +74,16 @@ namespace Devart.AI.McpServer.CommandLine
     {
     }
 
-    protected abstract string ProductFullName { get; }
+    public abstract string ProductFullName { get; }
+
+    public abstract string ProductId { get; }
+
+    protected virtual string TechnologyId => null;
+
+    public string ConnectionVariableName
+      => string.IsNullOrEmpty(TechnologyId)
+        ? $"{ConnectionVariablePrefix}{ProductId.ToUpperInvariant()}{ConnectionVariableSuffix}"
+        : $"{ConnectionVariablePrefix}{TechnologyId.ToUpperInvariant()}_{ProductId.ToUpperInvariant()}{ConnectionVariableSuffix}";
 
     protected abstract McpAppSettings CreateAppSettings();
 
@@ -77,24 +91,66 @@ namespace Devart.AI.McpServer.CommandLine
 
     protected virtual McpConfiguration LoadConfiguration(string configName, string configFile)
     {
-      var configPath = ResolveConfigPath(configFile, ConfigFileName, ProductFullName);
+      var configPath = McpConfigFile.Resolve(configFile, ProductFullName);
       return CreateConfiguration().Load(configPath, configName, CreateAppSettings());
     }
 
-    protected static string ResolveConfigPath(string configFile, string configFileName, string productFullName)
+    protected virtual McpConfiguration LoadEnvironmentConfiguration(string variableName, string configFile)
     {
-      if (!string.IsNullOrEmpty(configFile) && File.Exists(configFile))
+      var connectionString = ReadConnectionVariable(variableName) ?? throw new ArgumentException(string.Format(McpResources.CommandLine_ConnectionVariableNotSet, variableName));
+
+      var appSettings = CreateAppSettings();
+      var profile = JsonSerializer.SerializeToElement(new
       {
-        return configFile;
+        Id = SaveEnvironmentProfile(variableName, connectionString, configFile),
+        Name = variableName,
+        ConnectionString = connectionString,
+        ProtocolType = McpProtocolType.Stdio,
+      });
+
+      var config = CreateConfiguration().Create(profile, appSettings);
+
+      return string.IsNullOrEmpty(appSettings.ToolPrefix)
+        ? config with { ToolPrefix = ProductId.ToLowerInvariant() }
+        : config;
+    }
+
+    private static string ReadConnectionVariable(string variableName)
+    {
+      var value = Environment.GetEnvironmentVariable(variableName);
+      if (string.IsNullOrWhiteSpace(value))
+      {
+        return null;
       }
 
-      var localPath = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), configFileName);
-      if (File.Exists(localPath))
-      {
-        return localPath;
-      }
+      var trimmed = value.Trim();
 
-      return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Devart", productFullName, configFileName);
+      return trimmed.StartsWith(VariablePlaceholderStart, StringComparison.Ordinal) && trimmed.EndsWith(VariablePlaceholderEnd)
+        ? null
+        : value;
+    }
+
+    private Guid SaveEnvironmentProfile(string profileName, string connectionString, string configFile)
+    {
+      try
+      {
+        var path = string.IsNullOrEmpty(configFile) ? McpConfigFile.ResolveForUpdate(ProductFullName) : configFile;
+        var directory = Path.GetDirectoryName(path);
+        if (!string.IsNullOrEmpty(directory))
+        {
+          Directory.CreateDirectory(directory);
+        }
+
+        var store = McpConfigStore.Open(path);
+        var id = store.Set(profileName, new McpConfigValues(McpProtocolType.Stdio, null, null, null, connectionString));
+        store.Save();
+
+        return id;
+      }
+      catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or SecurityException or NotSupportedException or ArgumentException)
+      {
+        return Guid.NewGuid();
+      }
     }
 
     protected override async Task<int> DoActionAsync(ParseResult parseResult, CancellationToken cancellationToken)
@@ -105,9 +161,17 @@ namespace Devart.AI.McpServer.CommandLine
       string configName;
       try
       {
-        configName = parseResult.GetRequiredValue<string>(ConfigArgument);
+        configName = parseResult.GetValue<string>(ConfigArgument);
         var configFile = parseResult.GetValue<string>(FileOption);
-        config = LoadConfiguration(configName, configFile);
+        if (string.IsNullOrEmpty(configName))
+        {
+          configName = ConnectionVariableName;
+          config = LoadEnvironmentConfiguration(configName, configFile);
+        }
+        else
+        {
+          config = LoadConfiguration(configName, configFile);
+        }
       }
       catch (OperationCanceledException)
       {
@@ -193,18 +257,13 @@ namespace Devart.AI.McpServer.CommandLine
     }
 
     private Task<int> RunMcpServerAsync(McpConfiguration config, string configName, LogLevel logLevel, CancellationToken cancellationToken)
-    {
-      if (!Runners.TryGetValue(config.ProtocolType, out var runner))
-      {
-        throw new ArgumentException(McpResources.Common_ConfigFileInvalidProtocolType);
-      }
-
-      return runner.RunAsync(config, (builder, c) =>
-      {
-        builder.Services.AddSingleton(new McpRunContext(configName));
-        builder.Services.AddHostedService<McpLifetimeLogger>();
-        return SetupApplicationBuilder(builder, c);
-      }, logLevel, cancellationToken);
-    }
+      => !Runners.TryGetValue(config.ProtocolType, out var runner)
+        ? throw new ArgumentException(McpResources.Common_ConfigFileInvalidProtocolType)
+        : runner.RunAsync(config, (builder, c) =>
+          {
+            builder.Services.AddSingleton(new McpRunContext(configName));
+            builder.Services.AddHostedService<McpLifetimeLogger>();
+            return SetupApplicationBuilder(builder, c);
+          }, logLevel, cancellationToken);
   }
 }

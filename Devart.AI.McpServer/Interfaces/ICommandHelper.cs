@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="ICommandHelper.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -12,8 +12,8 @@ namespace Devart.AI.McpServer.Interfaces
 {
   public interface ICommandHelper
   {
-    public void AddParameter(DbCommand command, object value);
+    void AddParameter(DbCommand command, object value);
 
-    public DbParameter AddResultParameter(DbCommand command);
+    DbParameter AddResultParameter(DbCommand command);
   }
 }

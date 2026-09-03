@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="OdbcConfigCommand.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -10,7 +10,8 @@ using Devart.AI.McpServer.CommandLine;
 
 namespace Devart.AI.McpServer.Odbc.CommandLine
 {
-  internal sealed class OdbcConfigCommand : McpConfigCommand
+  internal sealed class OdbcConfigCommand(string productFullName)
+    : McpConfigCommand(productFullName, OdbcResources.CommandLine_CommandConfigOdbc)
   {
     protected override int ExecuteConfig()
     {

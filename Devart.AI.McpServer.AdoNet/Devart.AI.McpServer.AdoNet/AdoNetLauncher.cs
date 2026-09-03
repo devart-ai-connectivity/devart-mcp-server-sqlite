@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="AdoNetLauncher.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -7,7 +7,9 @@
 // --------------------------------------------------------------------------
 
 using System.CommandLine;
+using System.Linq;
 using Devart.AI.McpServer.AdoNet.CommandLine;
+using Devart.AI.McpServer.CommandLine;
 
 namespace Devart.AI.McpServer.AdoNet
 {
@@ -17,8 +19,11 @@ namespace Devart.AI.McpServer.AdoNet
     {
       var commands = new Command[productCommands.Length + 1];
       productCommands.CopyTo(commands, 0);
-      commands[productCommands.Length] = new AdoNetConfigCommand();
-      return new McpLauncher(commands);
+      commands[productCommands.Length] = new AdoNetConfigCommand(GetProductFullName(productCommands));
+      return new McpLauncher(AdoNetResources.CommandLine_RootCommand, commands);
     }
+
+    private static string GetProductFullName(Command[] productCommands)
+      => productCommands.OfType<McpRunCommand>().FirstOrDefault()?.ProductFullName;
   }
 }

@@ -1,5 +1,9 @@
 [![Devart MCP Server for SQLite](https://github.com/devart-ai-connectivity/.github/blob/main/assets/cover-banner-mcp-server-for-sqlite.webp?raw=true)](https://www.devart.com/mcp/)
 
+### Version 1.1.0
+
+**[What's new](https://github.com/devart-ai-connectivity/devart-mcp-server-sqlite/releases/latest)** · [Changelog](CHANGELOG.md)
+
 # Devart MCP Server for SQLite
 
 Devart MCP Server for SQLite enables AI clients to interact with your data through a secure server running in your environment. It turns a regular AI chat into a practical way to work with real-world business data — and it is faster than conventional export or manual querying.
@@ -102,7 +106,7 @@ Add the following configuration to the `mcpserver.json` file:
   "Connections": [
     {
       "Name": "my_sqlite",
-      "ConnectionString": "Server=localhost;User Id=sqlite;Password=your_password;Database=your_database;",
+      "ConnectionString": "Data Source=C:\\path\\to\\your_database.db;License Key=your_license_key;",
       "ProtocolType": "stdio"
     }
   ]
@@ -134,7 +138,7 @@ Add the following configuration to the `mcpserver.json` file:
   "Connections": [
     {
       "Name": "my_sqlite",
-      "ConnectionString": "Driver={Devart ODBC Driver for SQLite};Server=localhost;User ID=sqlite;Password=your_password;Database=your_database;",
+      "ConnectionString": "Driver={Devart ODBC Driver for SQLite};Database=C:\\path\\to\\your_database.db;",
       "ProtocolType": "stdio"
     }
   ]

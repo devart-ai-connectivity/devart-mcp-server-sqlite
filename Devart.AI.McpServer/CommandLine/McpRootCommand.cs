@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="McpRootCommand.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -16,7 +16,7 @@ namespace Devart.AI.McpServer.CommandLine
   {
     public static readonly string VerbosityOption = "--verbosity";
 
-    public McpRootCommand() : base(McpResources.CommandLine_RootCommand)
+    public McpRootCommand(string description = null) : base(description ?? McpResources.CommandLine_RootCommand)
     {
       Option<string> verbosityOption = new(VerbosityOption, "-v")
       {

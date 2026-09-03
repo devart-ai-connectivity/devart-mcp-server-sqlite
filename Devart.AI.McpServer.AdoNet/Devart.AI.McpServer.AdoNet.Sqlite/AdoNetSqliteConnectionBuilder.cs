@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="AdoNetSqliteConnectionBuilder.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED

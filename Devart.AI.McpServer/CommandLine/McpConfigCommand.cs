@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="McpConfigCommand.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -14,8 +14,16 @@ namespace Devart.AI.McpServer.CommandLine
 {
   public abstract class McpConfigCommand : McpCommand
   {
-    public McpConfigCommand() : base("config", "-c", McpResources.CommandLine_CommandConfigMcp)
+    public McpConfigCommand(string productFullName) : this(productFullName, McpResources.CommandLine_CommandConfigMcp)
     {
+    }
+
+    public McpConfigCommand(string productFullName, string description) : base("config", "-c", description)
+    {
+      Subcommands.Add(new McpConfigListCommand(productFullName));
+      Subcommands.Add(new McpConfigAddCommand(productFullName));
+      Subcommands.Add(new McpConfigEditCommand(productFullName));
+      Subcommands.Add(new McpConfigDeleteCommand(productFullName));
     }
 
     protected abstract int ExecuteConfig();

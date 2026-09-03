@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="McpDatabase.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -11,9 +11,9 @@ using System.Data.Common;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Devart.AI.McpServer.Extensions;
 using Devart.AI.McpServer.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Devart.AI.McpServer
 {
@@ -34,58 +34,59 @@ namespace Devart.AI.McpServer
       CancellationToken cancellationToken = default)
     {
       var pool = services.GetService<IConnectionPool>();
-      if (pool is not null) {
+      if (pool is not null)
+      {
         return await pool.OpenConnectionAsync(configuration, services, cancellationToken).ConfigureAwait(false);
       }
 
       var builder = services.GetService<IConnectionBuilder>() ?? throw new NotImplementedException("IConnectionBuilder not implemented");
 
-      await connectionLock.WaitAsync(cancellationToken).ConfigureAwait(false);
+      await this.connectionLock.WaitAsync(cancellationToken).ConfigureAwait(false);
       try
       {
-        if (!ConnectionIsAlive(connection))
+        if (!ConnectionIsAlive(this.connection))
         {
-          if (connection is not null)
+          if (this.connection is not null)
           {
             try
             {
-              await connection.DisposeAsync().ConfigureAwait(false);
+              await this.connection.DisposeAsync().ConfigureAwait(false);
             }
             catch
             {
             }
-            connection = null;
+            this.connection = null;
           }
 
-          connection = await builder.CreateConnectionAsync(configuration, cancellationToken).ConfigureAwait(false);
+          this.connection = await builder.CreateConnectionAsync(configuration, cancellationToken).ConfigureAwait(false);
         }
-        return connection;
+        return this.connection;
       }
       finally
       {
-        connectionLock.Release();
+        this.connectionLock.Release();
       }
     }
 
     public void Dispose()
     {
-      if (!disposed)
+      if (!this.disposed)
       {
         AppDomain.CurrentDomain.ProcessExit -= OnProcessExit;
         DisposeSync();
-        connectionLock.Dispose();
+        this.connectionLock.Dispose();
       }
       GC.SuppressFinalize(this);
     }
 
     public async ValueTask DisposeAsync()
     {
-      if (!disposed)
+      if (!this.disposed)
       {
         AppDomain.CurrentDomain.ProcessExit -= OnProcessExit;
         await DisposeAsyncCore().ConfigureAwait(false);
-        connectionLock.Dispose();
-        disposed = true;
+        this.connectionLock.Dispose();
+        this.disposed = true;
       }
       GC.SuppressFinalize(this);
     }
@@ -174,16 +175,16 @@ namespace Devart.AI.McpServer
 
     private async Task InvalidateCachedConnectionAsync(DbConnection failedConnection)
     {
-      await connectionLock.WaitAsync().ConfigureAwait(false);
+      await this.connectionLock.WaitAsync().ConfigureAwait(false);
       try
       {
-        if (!ReferenceEquals(connection, failedConnection))
+        if (!ReferenceEquals(this.connection, failedConnection))
         {
           return;
         }
 
-        var toDispose = connection;
-        connection = null;
+        var toDispose = this.connection;
+        this.connection = null;
         try
         {
           await toDispose.DisposeAsync().ConfigureAwait(false);
@@ -194,45 +195,42 @@ namespace Devart.AI.McpServer
       }
       finally
       {
-        connectionLock.Release();
+        this.connectionLock.Release();
       }
     }
 
-    private void OnProcessExit(object sender, EventArgs e)
-    {
-      DisposeSync();
-    }
+    private void OnProcessExit(object sender, EventArgs e) => DisposeSync();
 
     private void DisposeSync()
     {
-      if (connection is not null)
+      if (this.connection is not null)
       {
         try
         {
-          connection.Close();
-          connection.Dispose();
+          this.connection.Close();
+          this.connection.Dispose();
         }
         finally
         {
-          connection = null;
-          disposed = true;
+          this.connection = null;
+          this.disposed = true;
         }
       }
     }
 
     private async ValueTask DisposeAsyncCore()
     {
-      if (connection is not null)
+      if (this.connection is not null)
       {
         try
         {
-          connection.Close();
-          await connection.DisposeAsync().ConfigureAwait(false);
+          this.connection.Close();
+          await this.connection.DisposeAsync().ConfigureAwait(false);
         }
         finally
         {
-          connection = null;
-          disposed = true;
+          this.connection = null;
+          this.disposed = true;
         }
       }
     }

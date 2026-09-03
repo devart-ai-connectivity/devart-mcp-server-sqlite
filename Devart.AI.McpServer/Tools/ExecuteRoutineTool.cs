@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="ExecuteRoutineTool.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -14,9 +14,9 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Devart.AI.McpServer.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using ModelContextProtocol;
-using Devart.AI.McpServer.Interfaces;
 
 namespace Devart.AI.McpServer.Tools
 {
@@ -24,9 +24,12 @@ namespace Devart.AI.McpServer.Tools
   {
     private readonly HashSet<string> allowedRoutineTypes = [.. serverConfiguration.SupportedRoutines];
 
-    private string AllowedRoutineTypesFormatted => $"'{string.Join("' or '", allowedRoutineTypes)}'";
+    private string AllowedRoutineTypesFormatted => $"'{string.Join("' or '", this.allowedRoutineTypes)}'";
 
     protected override string Name => "execute_routine";
+
+    public override bool IsApplicable(McpConfiguration configuration)
+      => configuration.SupportedRoutines is { Count: > 0 };
 
     protected override string Description
       => string.Format(
@@ -47,7 +50,7 @@ namespace Devart.AI.McpServer.Tools
       [Description("Dictionary of parameter ordinal positions and their values.")]
       Dictionary<int, object> parameters,
       IServiceProvider services,
-      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(schema, routineName, routineType, parameters, services, cancellationToken));
+      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(schema, routineName, routineType, parameters, services, cancellationToken), services);
 
     protected virtual async Task<string> ExecuteAsync(
       string schema,
@@ -67,7 +70,8 @@ namespace Devart.AI.McpServer.Tools
       var routineFullName = formatter.FormatName(schema, routineName, configuration, connection);
 
       await using var command = connection.CreateCommand();
-      await InitializeParametersAsync(command, commandHelper, parameters, database, connection, cancellationToken).ConfigureAwait(false);
+
+      AddParameters(command, commandHelper, parameters, database);
 
       return normalizedRoutineType switch
       {
@@ -78,7 +82,7 @@ namespace Devart.AI.McpServer.Tools
     }
 
     private string ValidateRoutineType(string routineType)
-      => allowedRoutineTypes.FirstOrDefault(t => t.Equals(routineType?.Trim(), StringComparison.OrdinalIgnoreCase))
+      => this.allowedRoutineTypes.FirstOrDefault(t => t.Equals(routineType?.Trim(), StringComparison.OrdinalIgnoreCase))
         ?? throw new McpProtocolException(
           string.Format(
             McpResources.ExecuteRoutineTool_InvalidRoutineTypeError,
@@ -88,24 +92,28 @@ namespace Devart.AI.McpServer.Tools
           McpErrorCode.InvalidParams
         );
 
-    private static async Task InitializeParametersAsync(
+    private static void AddParameters(
       DbCommand command,
       ICommandHelper commandHelper,
       Dictionary<int, object> parameters,
-      IDatabase database,
-      DbConnection connection,
-      CancellationToken cancellationToken)
+      IDatabase database)
     {
       foreach (var parameter in parameters.OrderBy(p => p.Key))
       {
         var value = database.NormalizeParameterValue(parameter.Value);
         commandHelper.AddParameter(command, value);
       }
-      await database.ExecuteOnConnectionAsync(
+    }
+
+    private static Task PrepareAsync(
+      IDatabase database,
+      DbConnection connection,
+      DbCommand command,
+      CancellationToken cancellationToken)
+      => database.ExecuteOnConnectionAsync(
         connection,
         () => command.PrepareAsync(cancellationToken)
-      ).ConfigureAwait(false);
-    }
+      );
 
     private static async Task<string> ExecuteProcedure(
       IDatabase database,
@@ -116,6 +124,8 @@ namespace Devart.AI.McpServer.Tools
       CancellationToken cancellationToken)
     {
       command.CommandText = formatter.FormatCallProcedure(routineFullName, command.Parameters.Count);
+      await PrepareAsync(database, connection, command, cancellationToken).ConfigureAwait(false);
+
       await database.ExecuteOnConnectionAsync(
         connection,
         () => command.ExecuteNonQueryAsync(cancellationToken)
@@ -134,14 +144,28 @@ namespace Devart.AI.McpServer.Tools
       CancellationToken cancellationToken)
     {
       command.CommandText = formatter.FormatCallFunction(routineFullName, command.Parameters.Count);
+
       var resultParameter = commandHelper.AddResultParameter(command);
+      await PrepareAsync(database, connection, command, cancellationToken).ConfigureAwait(false);
 
-      await database.ExecuteOnConnectionAsync(
-        connection,
-        () => command.ExecuteNonQueryAsync(cancellationToken)
-      ).ConfigureAwait(false);
+      object returnValue;
+      if (resultParameter is null)
+      {
+        returnValue = await database.ExecuteOnConnectionAsync(
+          connection,
+          () => command.ExecuteScalarAsync(cancellationToken)
+        ).ConfigureAwait(false);
+      }
+      else
+      {
+        await database.ExecuteOnConnectionAsync(
+          connection,
+          () => command.ExecuteNonQueryAsync(cancellationToken)
+        ).ConfigureAwait(false);
+        returnValue = resultParameter.Value;
+      }
 
-      var returnValueString = MarkdownTableFormatter.FormatTableValue(resultParameter.Value);
+      var returnValueString = MarkdownTableFormatter.FormatTableValue(returnValue);
       return string.Format(McpResources.ExecuteRoutineTool_FunctionSuccessMessage, returnValueString);
     }
   }

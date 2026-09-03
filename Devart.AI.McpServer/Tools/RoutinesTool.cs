@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="RoutinesTool.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -7,25 +7,43 @@
 // --------------------------------------------------------------------------
 
 using System;
+using System.Data;
+using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Devart.AI.McpServer.Extensions;
 using Devart.AI.McpServer.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Devart.AI.McpServer.Tools
 {
-  public abstract class RoutinesTool(McpConfiguration serverConfiguration) : McpTool(serverConfiguration)
+  public class RoutinesTool(McpConfiguration serverConfiguration) : McpTool(serverConfiguration)
   {
     protected override string Name => "get_routines";
+
+    public override bool IsApplicable(McpConfiguration configuration)
+      => configuration.SupportedRoutines is { Count: > 0 };
 
     protected override string Description => string.Format(McpResources.RoutinesTool_Description, ServerConfiguration.SourceDisplayName);
 
     protected override Delegate ExecuteDefinition => Execute;
 
+    protected override async Task<DataTable> GetMetadataTable(
+      DbConnection connection,
+      string schema,
+      string tableName,
+      IServiceProvider services,
+      CancellationToken cancellationToken)
+    {
+      var metadata = services.GetRequiredService<IMetadata>();
+      return await connection
+        .GetSchemaAsync(metadata.RoutinesCollectionName, cancellationToken)
+        .ConfigureAwait(false);
+    }
+
     public Task<string> Execute(
       IServiceProvider services,
-      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(services, cancellationToken));
+      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(services, cancellationToken), services);
 
     protected virtual async Task<string> ExecuteAsync(
       IServiceProvider services,
@@ -41,7 +59,7 @@ namespace Devart.AI.McpServer.Tools
         () => GetMetadataTable(connection, "", "", services, cancellationToken)
       ).ConfigureAwait(false);
 
-      var markdownTable = table?.ToMarkdown(metadata.RoutinesColumnsMapping);
+      var markdownTable = RequireMetadataTable(table, () => metadata.RoutinesCollectionName).ToMarkdown(metadata.RoutinesColumnsMapping);
 
       return $"{McpResources.RoutinesTool_OutputHeader}{Environment.NewLine}{markdownTable}";
     }

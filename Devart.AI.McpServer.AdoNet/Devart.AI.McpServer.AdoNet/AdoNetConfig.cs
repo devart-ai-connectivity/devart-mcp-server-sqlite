@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="AdoNetConfig.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -12,9 +12,6 @@ namespace Devart.AI.McpServer.AdoNet
 {
   internal sealed class AdoNetConfig : IConfig
   {
-    public int Execute()
-    {
-      return 0;
-    }
+    public int Execute() => 0;
   }
 }

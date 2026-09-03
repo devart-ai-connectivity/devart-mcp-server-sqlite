@@ -151,7 +151,43 @@ namespace Devart.AI.McpServer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Displays the configuration window for the MCP Server.
+        ///   Looks up a localized string similar to Adds a new configuration to the MCP Server configuration file.
+        /// </summary>
+        public static string CommandLine_CommandConfigAdd {
+            get {
+                return ResourceManager.GetString("CommandLine_CommandConfigAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removes a configuration from the MCP Server configuration file.
+        /// </summary>
+        public static string CommandLine_CommandConfigDelete {
+            get {
+                return ResourceManager.GetString("CommandLine_CommandConfigDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modifies an existing configuration in the MCP Server configuration file.
+        /// </summary>
+        public static string CommandLine_CommandConfigEdit {
+            get {
+                return ResourceManager.GetString("CommandLine_CommandConfigEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lists the configurations available in the MCP Server configuration file.
+        /// </summary>
+        public static string CommandLine_CommandConfigList {
+            get {
+                return ResourceManager.GetString("CommandLine_CommandConfigList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manages the MCP Server configurations: list, add, edit, delete.
         /// </summary>
         public static string CommandLine_CommandConfigMcp {
             get {
@@ -174,6 +210,150 @@ namespace Devart.AI.McpServer.Properties {
         public static string CommandLine_ConfigFileNotFound {
             get {
                 return ResourceManager.GetString("CommandLine_ConfigFileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The configuration name is not specified and the {0} environment variable is not set. Specify the configuration name or set {0} to the connection string..
+        /// </summary>
+        public static string CommandLine_ConnectionVariableNotSet {
+            get {
+                return ResourceManager.GetString("CommandLine_ConnectionVariableNotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No configurations found in {0}..
+        /// </summary>
+        public static string CommandLine_ConfigListEmpty {
+            get {
+                return ResourceManager.GetString("CommandLine_ConfigListEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP address.
+        /// </summary>
+        public static string CommandLine_ConfigListHttpAddress {
+            get {
+                return ResourceManager.GetString("CommandLine_ConfigListHttpAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP port.
+        /// </summary>
+        public static string CommandLine_ConfigListHttpPort {
+            get {
+                return ResourceManager.GetString("CommandLine_ConfigListHttpPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP route prefix.
+        /// </summary>
+        public static string CommandLine_ConfigListHttpRoutePrefix {
+            get {
+                return ResourceManager.GetString("CommandLine_ConfigListHttpRoutePrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string CommandLine_ConfigListName {
+            get {
+                return ResourceManager.GetString("CommandLine_ConfigListName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Protocol type.
+        /// </summary>
+        public static string CommandLine_ConfigListProtocolType {
+            get {
+                return ResourceManager.GetString("CommandLine_ConfigListProtocolType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nothing to update. Specify at least one of --protocol-type, --http-address, --http-port, --http-route-prefix, and --connection-string..
+        /// </summary>
+        public static string CommandLine_ConfigNothingToUpdate {
+            get {
+                return ResourceManager.GetString("CommandLine_ConfigNothingToUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration '{0}' added to {1}..
+        /// </summary>
+        public static string CommandLine_ConfigProfileAdded {
+            get {
+                return ResourceManager.GetString("CommandLine_ConfigProfileAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration '{0}' deleted from {1}..
+        /// </summary>
+        public static string CommandLine_ConfigProfileDeleted {
+            get {
+                return ResourceManager.GetString("CommandLine_ConfigProfileDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration '{0}' already exists in {1}..
+        /// </summary>
+        public static string CommandLine_ConfigProfileExists {
+            get {
+                return ResourceManager.GetString("CommandLine_ConfigProfileExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The configuration name must not be empty..
+        /// </summary>
+        public static string CommandLine_ConfigProfileNameRequired {
+            get {
+                return ResourceManager.GetString("CommandLine_ConfigProfileNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration '{0}' not found in {1}..
+        /// </summary>
+        public static string CommandLine_ConfigProfileNotFound {
+            get {
+                return ResourceManager.GetString("CommandLine_ConfigProfileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration '{0}' updated in {1}..
+        /// </summary>
+        public static string CommandLine_ConfigProfileUpdated {
+            get {
+                return ResourceManager.GetString("CommandLine_ConfigProfileUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Argument '{0}' not recognized. The port must be an integer between {1} and {2}..
+        /// </summary>
+        public static string CommandLine_InvalidHttpPort {
+            get {
+                return ResourceManager.GetString("CommandLine_InvalidHttpPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Argument '{0}' not recognized. Must be one of: 'stdio', 'http'.
+        /// </summary>
+        public static string CommandLine_InvalidProtocolType {
+            get {
+                return ResourceManager.GetString("CommandLine_InvalidProtocolType", resourceCulture);
             }
         }
         
@@ -223,6 +403,15 @@ namespace Devart.AI.McpServer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The connection string used by the configuration..
+        /// </summary>
+        public static string CommandLine_OptionConnectionString {
+            get {
+                return ResourceManager.GetString("CommandLine_OptionConnectionString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specifies the full path to the configuration file. If the option is omitted or the specified file does not exist, the configuration file is searched first in the server folder, then in the &lt;ProgramData&gt; folder..
         /// </summary>
         public static string CommandLine_OptionFile {
@@ -232,7 +421,43 @@ namespace Devart.AI.McpServer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The name of the configuration to be used when starting the MCP server..
+        ///   Looks up a localized string similar to The address the MCP server listens on when the protocol type is http..
+        /// </summary>
+        public static string CommandLine_OptionHttpAddress {
+            get {
+                return ResourceManager.GetString("CommandLine_OptionHttpAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The port the MCP server listens on when the protocol type is http..
+        /// </summary>
+        public static string CommandLine_OptionHttpPort {
+            get {
+                return ResourceManager.GetString("CommandLine_OptionHttpPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The route prefix the MCP server is served under when the protocol type is http..
+        /// </summary>
+        public static string CommandLine_OptionHttpRoutePrefix {
+            get {
+                return ResourceManager.GetString("CommandLine_OptionHttpRoutePrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The protocol type used by the configuration. Allowed values are stdio and http..
+        /// </summary>
+        public static string CommandLine_OptionProtocolType {
+            get {
+                return ResourceManager.GetString("CommandLine_OptionProtocolType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name of the configuration to be used when starting the MCP server. If it is omitted, the connection string is read from the {0} environment variable..
         /// </summary>
         public static string CommandLine_ParamConfigName {
             get {
@@ -241,7 +466,16 @@ namespace Devart.AI.McpServer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Devart AI MCP Server (ODBC).
+        ///   Looks up a localized string similar to The name of the configuration to be added, modified, or removed..
+        /// </summary>
+        public static string CommandLine_ParamProfileName {
+            get {
+                return ResourceManager.GetString("CommandLine_ParamProfileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Devart AI MCP Server.
         /// </summary>
         public static string CommandLine_RootCommand {
             get {
@@ -322,6 +556,24 @@ namespace Devart.AI.McpServer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The data provider returned no metadata for the &quot;{0}&quot; collection..
+        /// </summary>
+        public static string Common_MetadataCollectionNotReturned {
+            get {
+                return ResourceManager.GetString("Common_MetadataCollectionNotReturned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The data provider does not expose the required column(s) {0} in the &quot;{1}&quot; metadata collection..
+        /// </summary>
+        public static string Common_MetadataColumnsMissing {
+            get {
+                return ResourceManager.GetString("Common_MetadataColumnsMissing", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to No data available..
         /// </summary>
         public static string Common_NoDataAvailable {
@@ -329,7 +581,16 @@ namespace Devart.AI.McpServer.Properties {
                 return ResourceManager.GetString("Common_NoDataAvailable", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to The query result does not contain the required column(s) {0}..
+        /// </summary>
+        public static string Common_ResultColumnsMissing {
+            get {
+                return ResourceManager.GetString("Common_ResultColumnsMissing", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to No SQL statements provided..
         /// </summary>

@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="MarkdownTableFormatter.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -29,9 +29,13 @@ namespace Devart.AI.McpServer
       NullValue = "";
 
     public static string FormatDataTable(DataTable table,
-      (string name, string alias)[] columnsMapping = null,
+      MetadataColumn[] columnsMapping = null,
       Predicate<DataRow> skipPredicate = null)
     {
+      if (table is null)
+      {
+        return string.Empty;
+      }
       if (table.Columns.Count == 0)
       {
         return string.Empty;
@@ -41,9 +45,22 @@ namespace Devart.AI.McpServer
         return McpResources.Common_NoDataAvailable;
       }
 
-      var result = new StringBuilder(table.Columns.Count * 10 * table.Rows.Count + 1);
+      columnsMapping ??= [.. table.Columns.Cast<DataColumn>().Select(c => new MetadataColumn(c.ColumnName, c.ColumnName))];
 
-      columnsMapping ??= [.. table.Columns.Cast<DataColumn>().Select(c => (c.ColumnName, c.ColumnName))];
+      var columns = ResolveColumns(columnsMapping, table.Columns.Contains, out var missingColumns);
+      if (missingColumns.Length > 0)
+      {
+        throw new InvalidOperationException(string.Format(
+          McpResources.Common_MetadataColumnsMissing,
+          string.Join(", ", missingColumns),
+          table.TableName));
+      }
+      if (columns.Length == 0)
+      {
+        return McpResources.Common_NoDataAvailable;
+      }
+
+      var result = new StringBuilder(columns.Length * 10 * table.Rows.Count + 1);
 
       foreach (DataRow row in table.Rows)
       {
@@ -54,11 +71,11 @@ namespace Devart.AI.McpServer
 
         if (result.Length == 0)
         {
-          FormatTableHeader(columnsMapping.Select(c => c.alias), result);
+          FormatTableHeader(columns.Select(c => c.Alias), result);
         }
 
         result.AppendLine();
-        FormatTableRow(columnsMapping.Select(column => FormatTableValue(row[column.name])), result);
+        FormatTableRow(columns.Select(column => FormatTableValue(row[column.Name])), result);
       }
 
       return result.Length == 0 ? McpResources.Common_NoDataAvailable : result.ToString();
@@ -66,7 +83,7 @@ namespace Devart.AI.McpServer
 
     public static async Task<string> FormatDataReaderAsync(
       DbDataReader reader,
-      (string name, string alias)[] columnsMapping = null,
+      MetadataColumn[] columnsMapping = null,
       Predicate<object[]> skipPredicate = null,
       CancellationToken cancellationToken = default)
     {
@@ -74,17 +91,34 @@ namespace Devart.AI.McpServer
       {
         return McpResources.Common_NoDataAvailable;
       }
-      var result = new StringBuilder(reader.FieldCount * 10 * 5);
-      columnsMapping ??= [.. Enumerable.Range(0, reader.FieldCount).Select(i => (reader.GetName(i), reader.GetName(i)))];
+      columnsMapping ??= [.. Enumerable.Range(0, reader.FieldCount).Select(i => new MetadataColumn(reader.GetName(i), reader.GetName(i)))];
 
-      FormatTableHeader(columnsMapping.Select(c => c.alias), result);
+      var fieldNames = new HashSet<string>(
+        Enumerable.Range(0, reader.FieldCount).Select(reader.GetName),
+        StringComparer.OrdinalIgnoreCase);
 
-      object[] row = new object[columnsMapping.Length];
+      var columns = ResolveColumns(columnsMapping, fieldNames.Contains, out var missingColumns);
+      if (missingColumns.Length > 0)
+      {
+        throw new InvalidOperationException(string.Format(
+          McpResources.Common_ResultColumnsMissing,
+          string.Join(", ", missingColumns)));
+      }
+      if (columns.Length == 0)
+      {
+        return McpResources.Common_NoDataAvailable;
+      }
+
+      var result = new StringBuilder(columns.Length * 10 * 5);
+
+      FormatTableHeader(columns.Select(c => c.Alias), result);
+
+      object[] row = new object[columns.Length];
       while (await reader.ReadAsync(cancellationToken))
       {
         for (int i = 0; i < row.Length; i++)
         {
-          row[i] = reader[columnsMapping[i].name];
+          row[i] = reader[columns[i].Name];
         }
         if (skipPredicate?.Invoke(row) == true)
         {
@@ -95,6 +129,18 @@ namespace Devart.AI.McpServer
         FormatTableRow(row, result);
       }
       return result.ToString();
+    }
+
+    private static MetadataColumn[] ResolveColumns(
+      MetadataColumn[] columnsMapping,
+      Func<string, bool> columnExists,
+      out string[] missingColumns)
+    {
+      missingColumns = [.. columnsMapping
+        .Where(column => column.Required && !columnExists(column.Name))
+        .Select(column => column.Name)];
+
+      return [.. columnsMapping.Where(column => columnExists(column.Name))];
     }
 
     public static string FormatTableValue(object value) => value == null || value == DBNull.Value

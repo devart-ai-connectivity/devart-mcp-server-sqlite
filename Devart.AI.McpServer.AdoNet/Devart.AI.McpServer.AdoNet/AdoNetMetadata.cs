@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="AdoNetMetadata.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -6,64 +6,58 @@
 // </copyright>
 // --------------------------------------------------------------------------
 
+using System;
 using Devart.AI.McpServer.Interfaces;
 
 namespace Devart.AI.McpServer.AdoNet
 {
-  internal sealed class AdoNetMetadata : IMetadata
+  public class AdoNetMetadata : IMetadata
   {
-    public string DatabaseName(string database) => database;
+    public virtual string DatabaseName(string database) => database;
 
-    public string SchemaName(string schema) => schema;
+    public virtual string SchemaName(string schema) => schema;
 
-    public string TablesCollectionName => AdoNetConstants.Tables;
+    public virtual string TablesCollectionName => throw NotConfigured();
 
-    public string TablesSchemaName => AdoNetConstants.TableSchema;
+    public virtual string TablesSchemaName => throw NotConfigured();
 
-    public (string name, string alias)[] TablesColumnsMapping
-      => [(AdoNetConstants.TableSchema, McpResources.TablesTool_TableSchema),
-          (AdoNetConstants.TableName, McpResources.TablesTool_TableName),
-          (AdoNetConstants.TableRemarks, McpResources.TablesTool_Remarks)];
+    public virtual MetadataColumn[] TablesColumnsMapping => throw NotConfigured();
 
-    public string ColumnsCollectionName => AdoNetConstants.Columns;
+    public virtual string[] TablesRestrictions(string database) => null;
 
-    public (string name, string alias)[] ColumnsColumnsMapping
-      => [(AdoNetConstants.ColumnName, McpResources.ColumnsTool_ColumnNameHeader),
-          (AdoNetConstants.ColumnTypeName, McpResources.ColumnsTool_DataTypeHeader),
-          (AdoNetConstants.ColumnSize, McpResources.ColumnsTool_SizeHeader),
-          (AdoNetConstants.ColumnNullable, McpResources.ColumnsTool_NullableHeader),
-          (AdoNetConstants.ColumnRemarks, McpResources.ColumnsTool_DescriptionHeader)];
+    public virtual string ColumnsCollectionName => throw NotConfigured();
 
-    public string IndexesCollectionName => AdoNetConstants.Indexes;
+    public virtual MetadataColumn[] ColumnsColumnsMapping => throw NotConfigured();
 
-    public (string name, string alias)[] IndexesColumnsMapping
-      => [(AdoNetConstants.IndexName, McpResources.IndexesTool_IndexName),
-          (AdoNetConstants.IndexType, McpResources.IndexesTool_IndexType),
-          (AdoNetConstants.IndexColumns, McpResources.IndexesTool_Columns)];
+    public virtual string[] ColumnsRestrictions(string database, string schema, string tableName)
+      => throw NotConfigured();
 
-    public string ForeignKeysCollectionName => AdoNetConstants.ForeignKeys;
+    public virtual string IndexesCollectionName => throw NotConfigured();
 
-    public (string name, string alias)[] ForeignKeysColumnsMapping
-      => [(AdoNetConstants.ForeignKeyFkName, McpResources.ForeignKeysTool_FkNameHeader),
-          (AdoNetConstants.ForeignKeyFkColumn, McpResources.ForeignKeysTool_FkColumnHeader),
-          (AdoNetConstants.ForeignKeyPkSchema, McpResources.ForeignKeysTool_PkSchemaHeader),
-          (AdoNetConstants.ForeignKeyPkTable, McpResources.ForeignKeysTool_PkTableHeader),
-          (AdoNetConstants.ForeignKeyPkColumn, McpResources.ForeignKeysTool_PkColumnHeader),
-          (AdoNetConstants.ForeignKeyUpdateRule, McpResources.ForeignKeysTool_UpdateRuleHeader),
-          (AdoNetConstants.ForeignKeyDeleteRule, McpResources.ForeignKeysTool_DeleteRuleHeader)];
+    public virtual MetadataColumn[] IndexesColumnsMapping => throw NotConfigured();
 
-    public string PrimaryKeysCollectionName => AdoNetConstants.PrimaryKeys;
+    public virtual string[] IndexesRestrictions(string database, string schema, string tableName)
+      => throw NotConfigured();
 
-    public (string name, string alias)[] PrimaryKeysColumnsMapping
-      => [(AdoNetConstants.PrimaryKeyName, McpResources.PrimaryKeysTool_PkNameHeader),
-          (AdoNetConstants.PrimaryKeyColumn, McpResources.PrimaryKeysTool_PkColumnHeader)];
+    public virtual string ForeignKeysCollectionName => throw NotConfigured();
 
-    public string RoutinesCollectionName => "";
+    public virtual MetadataColumn[] ForeignKeysColumnsMapping => throw NotConfigured();
 
-    public (string name, string alias)[] RoutinesColumnsMapping
-      => [(AdoNetConstants.ProcedureSchema, McpResources.RoutinesTool_ProcedureSchema),
-          (AdoNetConstants.ProcedureName, McpResources.RoutinesTool_ProcedureName),
-          (AdoNetConstants.ProcedureType, McpResources.RoutinesTool_ProcedureType),
-          (AdoNetConstants.ProcedureParameters, McpResources.RoutinesTool_ProcedureParameters)];
+    public virtual string[] ForeignKeysRestrictions(string database, string schema, string tableName)
+      => throw NotConfigured();
+
+    public virtual string PrimaryKeysCollectionName => throw NotConfigured();
+
+    public virtual MetadataColumn[] PrimaryKeysColumnsMapping => throw NotConfigured();
+
+    public virtual string[] PrimaryKeysRestrictions(string database, string schema, string tableName)
+      => throw NotConfigured();
+
+    public virtual string RoutinesCollectionName => throw NotConfigured();
+
+    public virtual MetadataColumn[] RoutinesColumnsMapping => throw NotConfigured();
+
+    private static NotSupportedException NotConfigured()
+      => new(AdoNetResources.AdoNetMetadata_NotConfigured);
   }
 }

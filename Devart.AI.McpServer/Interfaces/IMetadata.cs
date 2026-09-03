@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="IMetadata.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -13,29 +13,39 @@ namespace Devart.AI.McpServer.Interfaces
     string DatabaseName(string database);
 
     string SchemaName(string schema);
-    
+
     string TablesCollectionName { get; }
-    
+
     string TablesSchemaName { get; }
-    
-    (string name, string alias)[] TablesColumnsMapping { get; }
-    
+
+    MetadataColumn[] TablesColumnsMapping { get; }
+
+    string[] TablesRestrictions(string database);
+
     string ColumnsCollectionName { get; }
 
-    (string name, string alias)[] ColumnsColumnsMapping { get; }
+    MetadataColumn[] ColumnsColumnsMapping { get; }
+
+    string[] ColumnsRestrictions(string database, string schema, string tableName);
 
     string IndexesCollectionName { get; }
 
-    (string name, string alias)[] IndexesColumnsMapping { get; }
+    MetadataColumn[] IndexesColumnsMapping { get; }
+
+    string[] IndexesRestrictions(string database, string schema, string tableName);
 
     string ForeignKeysCollectionName { get; }
-    (string name, string alias)[] ForeignKeysColumnsMapping { get; }
+    MetadataColumn[] ForeignKeysColumnsMapping { get; }
+
+    string[] ForeignKeysRestrictions(string database, string schema, string tableName);
 
     string PrimaryKeysCollectionName { get; }
 
-    (string name, string alias)[] PrimaryKeysColumnsMapping { get; }
+    MetadataColumn[] PrimaryKeysColumnsMapping { get; }
+
+    string[] PrimaryKeysRestrictions(string database, string schema, string tableName);
 
     string RoutinesCollectionName { get; }
-    (string name, string alias)[] RoutinesColumnsMapping { get; }
+    MetadataColumn[] RoutinesColumnsMapping { get; }
   }
 }

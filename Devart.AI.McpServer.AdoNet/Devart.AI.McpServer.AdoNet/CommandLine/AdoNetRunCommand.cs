@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="AdoNetRunCommand.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -17,16 +17,20 @@ namespace Devart.AI.McpServer.AdoNet.CommandLine
   {
     protected abstract void SetupConnectionBuilder(IHostApplicationBuilder builder);
 
+    protected virtual void SetupMetadata(IHostApplicationBuilder builder) => builder.Services.AddSingleton<IMetadata, AdoNetMetadata>();
+
+    protected virtual void SetupSqlFormatter(IHostApplicationBuilder builder) => builder.Services.AddSingleton<ISqlFormatter, McpSqlFormatter>();
+
     protected sealed override void ConfigureServices(IHostApplicationBuilder builder, McpConfiguration configuration)
     {
-       builder.Services
-         .AddSingleton<IDatabase, McpDatabase>()
-         .AddSingleton<IConfig, AdoNetConfig>()
-         .AddSingleton<IMetadata, AdoNetMetadata>()
-         .AddSingleton<ICommandHelper, AdoNetCommandHelper>()
-         .AddSingleton<ISqlFormatter, McpSqlFormatter>()
-         .AddSingleton<ISqlStatementsParser, McpSqlStatementsParser>();
+      builder.Services
+        .AddSingleton<IDatabase, McpDatabase>()
+        .AddSingleton<IConfig, AdoNetConfig>()
+        .AddSingleton<ICommandHelper, AdoNetCommandHelper>()
+        .AddSingleton<ISqlStatementsParser, McpSqlStatementsParser>();
 
+      SetupSqlFormatter(builder);
+      SetupMetadata(builder);
       SetupConnectionBuilder(builder);
       ContributeServices(builder, configuration);
     }

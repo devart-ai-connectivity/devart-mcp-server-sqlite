@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="McpLifetimeLogger.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -28,18 +28,15 @@ namespace Devart.AI.McpServer.Hosting
         new EventId(1002, nameof(LogStopped)),
         McpResources.CommandLine_LogStopped);
 
-    private readonly ILogger<McpLifetimeLogger> _logger = logger;
-    private readonly McpRunContext _context = context;
-
     public Task StartAsync(CancellationToken cancellationToken)
     {
-      LogStarted(_logger, _context.ConfigName, null);
+      LogStarted(logger, context.ConfigName, null);
       return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-      LogStopped(_logger, null);
+      LogStopped(logger, null);
       return Task.CompletedTask;
     }
   }

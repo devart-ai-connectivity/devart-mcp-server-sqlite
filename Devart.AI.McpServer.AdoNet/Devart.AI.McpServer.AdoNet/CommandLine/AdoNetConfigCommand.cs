@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="AdoNetConfigCommand.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -10,7 +10,7 @@ using Devart.AI.McpServer.CommandLine;
 
 namespace Devart.AI.McpServer.AdoNet.CommandLine
 {
-  internal sealed class AdoNetConfigCommand : McpConfigCommand
+  internal sealed class AdoNetConfigCommand(string productFullName) : McpConfigCommand(productFullName)
   {
     protected override int ExecuteConfig()
     {

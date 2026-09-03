@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="OdbcConfig.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -6,7 +6,6 @@
 // </copyright>
 // --------------------------------------------------------------------------
 
-using System;
 using System.Diagnostics;
 using System.IO;
 using Devart.AI.McpServer.Interfaces;
@@ -18,11 +17,11 @@ namespace Devart.AI.McpServer.Odbc
     public int Execute()
     {
       var startInfo = new ProcessStartInfo
-        {  
-          FileName = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), "Devart.AI.McpServer.ConnectionManager.exe"),
-          UseShellExecute = false,
-          CreateNoWindow = false
-        };
+      {
+        FileName = Path.Combine(McpAppLocation.AppDirectory, "Devart.AI.McpServer.ConnectionManager.exe"),
+        UseShellExecute = false,
+        CreateNoWindow = false
+      };
 
       using var process = new Process { StartInfo = startInfo };
 

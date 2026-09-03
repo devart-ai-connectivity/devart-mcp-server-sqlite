@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="ConfigTool.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -9,8 +9,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Devart.AI.McpServer.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Devart.AI.McpServer.Tools
 {
@@ -24,7 +24,7 @@ namespace Devart.AI.McpServer.Tools
 
     public Task<string> Execute(
       IServiceProvider services,
-      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(services, cancellationToken));
+      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(services, cancellationToken), services);
 
     protected virtual async Task<string> ExecuteAsync(
       IServiceProvider services,

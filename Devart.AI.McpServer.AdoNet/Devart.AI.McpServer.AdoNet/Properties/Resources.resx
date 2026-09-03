@@ -120,4 +120,10 @@
   <data name="Common_ConfigFileConnectionStringRequired" xml:space="preserve">
     <value>The 'connection_string' parameter must be present in the configuration file.</value>
   </data>
+  <data name="CommandLine_RootCommand" xml:space="preserve">
+    <value>Devart AI MCP Server (ADO.NET)</value>
+  </data>
+  <data name="AdoNetMetadata_NotConfigured" xml:space="preserve">
+    <value>Metadata for this data source is not configured. The server must register its own IMetadata implementation.</value>
+  </data>
 </root>

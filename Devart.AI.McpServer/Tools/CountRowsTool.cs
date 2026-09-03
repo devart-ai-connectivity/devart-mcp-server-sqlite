@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="CountRowsTool.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -11,8 +11,8 @@ using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using Devart.AI.McpServer.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 using Devart.AI.McpServer.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Devart.AI.McpServer.Tools
 {
@@ -30,7 +30,7 @@ namespace Devart.AI.McpServer.Tools
       [Description("Name of the table.")]
       string tableName,
       IServiceProvider services,
-      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(schema, tableName, services, cancellationToken));
+      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(schema, tableName, services, cancellationToken), services);
 
     protected virtual async Task<string> ExecuteAsync(
       string schema,
@@ -44,14 +44,14 @@ namespace Devart.AI.McpServer.Tools
 
       var connection = await database.OpenConnectionAsync(configuration, services, cancellationToken).ConfigureAwait(false);
       var quotedFullName = formatter.FormatName(schema, tableName, configuration, connection);
-      var sql = $"SELECT '{quotedFullName}' AS NAME, COUNT(*) AS COUNT FROM {quotedFullName}";
+      var sql = $"SELECT '{quotedFullName}' AS NAME, COUNT(*) AS ROWS_COUNT FROM {quotedFullName}";
 
       await using var reader = await database.ExecuteReaderAsync(connection, sql, cancellationToken: cancellationToken).ConfigureAwait(false);
 
-      (string name, string alias)[] columns =
+      MetadataColumn[] columns =
       [
         ("NAME", McpResources.CountRowsTool_TableName),
-        ("COUNT", McpResources.CountRowsTool_RowsCount)
+        ("ROWS_COUNT", McpResources.CountRowsTool_RowsCount)
       ];
 
       return await database.ExecuteOnConnectionAsync(

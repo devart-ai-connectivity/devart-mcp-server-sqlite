@@ -120,4 +120,16 @@
   <data name="Common_ConfigFileDsnRequired" xml:space="preserve">
     <value>Either the 'dsn' or the 'connection_string' parameters must be present in the configuration file.</value>
   </data>
+  <data name="Connection_UnsupportedDriver" xml:space="preserve">
+    <value>The ODBC driver is not supported. This server works with {0}. Check the driver specified in the data source. You can download the required driver at {1}.</value>
+  </data>
+  <data name="CommandLine_RootCommand" xml:space="preserve">
+    <value>Devart AI MCP Server (ODBC)</value>
+  </data>
+  <data name="Connection_DriverNotInstalled" xml:space="preserve">
+    <value>Apparently, {0} is not installed. You can download the driver at {1}.</value>
+  </data>
+  <data name="CommandLine_CommandConfigOdbc" xml:space="preserve">
+    <value>Manages the MCP Server configurations: list, add, edit, delete; with no subcommand, displays the configuration window</value>
+  </data>
 </root>

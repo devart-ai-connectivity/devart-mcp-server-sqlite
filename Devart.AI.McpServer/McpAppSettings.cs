@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="McpAppSettings.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -17,6 +17,12 @@ namespace Devart.AI.McpServer
     public abstract bool OnPremise { get; }
 
     public virtual string ToolPrefix => null;
+
+    public virtual string Driver => null;
+
+    public virtual string DriverUrl => null;
+
+    public virtual string DriverDll => null;
 
     public virtual string[] NonQueryOperations => [
       "Insert",

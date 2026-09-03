@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="ISqlFormatter.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -13,6 +13,10 @@ namespace Devart.AI.McpServer.Interfaces
   public interface ISqlFormatter
   {
     string FormatName(string schema, string name, McpConfiguration configuration, DbConnection connection);
+
+    string FormatParameterName(int index);
+
+    string FormatParameterPlaceholder(int index);
 
     string FormatCallProcedure(string procedureFullName, int parametersCount);
 

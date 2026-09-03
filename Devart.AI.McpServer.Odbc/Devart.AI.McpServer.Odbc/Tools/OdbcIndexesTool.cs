@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="OdbcIndexesTool.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -11,9 +11,9 @@ using System.Data;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Devart.AI.McpServer.Interfaces;
 using Devart.AI.McpServer.Tools;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Devart.AI.McpServer.Odbc.Tools
 {
@@ -28,16 +28,15 @@ namespace Devart.AI.McpServer.Odbc.Tools
     {
       var metadata = services.GetRequiredService<IMetadata>();
 
-      var resultTable = await base.GetMetadataTable(connection, schema, tableName, services, cancellationToken).ConfigureAwait(false);
-
-      resultTable.Columns.Add(OdbcConstants.IndexName, typeof(string));
-      resultTable.Columns.Add(OdbcConstants.IndexType, typeof(string));
-      resultTable.Columns.Add(OdbcConstants.IndexColumn, typeof(string));
-      resultTable.Columns.Add(OdbcConstants.OrdinalPosition, typeof(int));
+      var resultTable = CreateAnswerTable(
+        (OdbcConstants.IndexName, typeof(string)),
+        (OdbcConstants.IndexType, typeof(string)),
+        (OdbcConstants.IndexColumn, typeof(string)),
+        (OdbcConstants.OrdinalPosition, typeof(int)));
 
       using var indexes = await connection.GetSchemaAsync(
         metadata.IndexesCollectionName,
-        [metadata.DatabaseName(connection.Database), metadata.SchemaName(schema), tableName],
+        metadata.IndexesRestrictions(connection.Database, schema, tableName),
         cancellationToken
       ).ConfigureAwait(false);
 
@@ -45,7 +44,9 @@ namespace Devart.AI.McpServer.Odbc.Tools
       {
         var indexName = index[OdbcConstants.IndexName]?.ToString();
         if (indexName == null)
+        {
           continue;
+        }
 
         var indexColumn = index[OdbcConstants.IndexColumn]?.ToString();
         var indexColumnOrdinal = index[OdbcConstants.OrdinalPosition];

@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="AdoNetSqliteAppSettings.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -15,5 +15,7 @@ namespace Devart.AI.McpServer.AdoNet.Sqlite
     public override string SourceName => "SQLite";
 
     public override bool OnPremise => true;
+
+    public override string[] Routines => [];
   }
 }

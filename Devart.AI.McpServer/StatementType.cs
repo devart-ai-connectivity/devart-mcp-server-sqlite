@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="StatementType.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -6,8 +6,11 @@
 // </copyright>
 // --------------------------------------------------------------------------
 
+using System.Reflection;
+
 namespace Devart.AI.McpServer
 {
+  [Obfuscation]
   public enum StatementType
   {
     Select,

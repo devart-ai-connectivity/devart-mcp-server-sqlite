@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="OdbcCommandHelper.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -18,14 +18,17 @@ namespace Devart.AI.McpServer.Odbc
     public void AddParameter(DbCommand command, object value) => ((OdbcCommand)command).Parameters.AddWithValue("?", value);
 
     public DbParameter AddResultParameter(DbCommand command)
-      => ((OdbcCommand)command).Parameters.Add(
-        new OdbcParameter
-        {
-          ParameterName = "?",
-          OdbcType = OdbcType.NVarChar,
-          Size = 4000,
-          Direction = ParameterDirection.ReturnValue
-        }
-      );
+    {
+      var parameter = new OdbcParameter
+      {
+        ParameterName = "?",
+        OdbcType = OdbcType.NVarChar,
+        Size = 4000,
+        Direction = ParameterDirection.ReturnValue
+      };
+
+      ((OdbcCommand)command).Parameters.Insert(0, parameter);
+      return parameter;
+    }
   }
 }

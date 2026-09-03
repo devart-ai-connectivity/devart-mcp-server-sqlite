@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="OdbcSqliteRunCommand.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -6,10 +6,10 @@
 // </copyright>
 // --------------------------------------------------------------------------
 
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Devart.AI.McpServer.Odbc.CommandLine;
 using Devart.AI.McpServer.Odbc.Sqlite.Properties;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Devart.AI.McpServer.Odbc.Sqlite.CommandLine
 {
@@ -18,7 +18,9 @@ namespace Devart.AI.McpServer.Odbc.Sqlite.CommandLine
     protected override void RegisterTools(IMcpServerBuilder serverBuilder, McpConfiguration configuration)
       => serverBuilder.WithTools(OdbcSqliteTools.CreateTools(configuration));
 
-    protected override string ProductFullName => ProductInfo.ProductFullName;
+    public override string ProductFullName => ProductInfo.ProductFullName;
+
+    public override string ProductId => ProductInfo.ProductId;
 
     protected override McpAppSettings CreateAppSettings() => new OdbcSqliteAppSettings();
   }

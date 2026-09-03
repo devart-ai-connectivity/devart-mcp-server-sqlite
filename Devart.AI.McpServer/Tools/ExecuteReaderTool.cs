@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="ExecuteReaderTool.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -11,10 +11,10 @@ using System.ComponentModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using ModelContextProtocol;
 using Devart.AI.McpServer.Extensions;
 using Devart.AI.McpServer.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using ModelContextProtocol;
 
 namespace Devart.AI.McpServer.Tools
 {
@@ -33,7 +33,7 @@ namespace Devart.AI.McpServer.Tools
       string sql,
       IServiceProvider services,
       IProgress<ProgressNotificationValue> progress,
-      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(sql, services, progress, cancellationToken));
+      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(sql, services, progress, cancellationToken), services);
 
     protected virtual async Task<string> ExecuteAsync(
       string sql,
@@ -120,14 +120,11 @@ namespace Devart.AI.McpServer.Tools
           }
         }, CancellationToken.None);
 
-    private static void ReportProgress(IProgress<ProgressNotificationValue> progress, string message, float progressValue)
+    private static void ReportProgress(IProgress<ProgressNotificationValue> progress, string message, float progressValue) => progress?.Report(new ProgressNotificationValue
     {
-      progress?.Report(new ProgressNotificationValue
-      {
-        Message = message,
-        Progress = progressValue
-      });
-    }
+      Message = message,
+      Progress = progressValue
+    });
 
     private static SqlStatement[] GetStatements(string sql, ISqlStatementsParser parser)
     {

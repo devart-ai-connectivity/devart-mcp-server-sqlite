@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="HttpMcpHostRunner.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -9,13 +9,13 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Devart.AI.McpServer.Interfaces;
+using Devart.AI.McpServer.Shutdown;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Devart.AI.McpServer.Shutdown;
-using Devart.AI.McpServer.Interfaces;
 
 namespace Devart.AI.McpServer.Hosting
 {
@@ -39,14 +39,14 @@ namespace Devart.AI.McpServer.Hosting
 
       var builder = WebApplication.CreateSlimBuilder([]);
       McpLoggingSetup.Configure(builder.Logging, logLevel);
-      builder.WebHost.UseUrls($"http://localhost:{configuration.HttpPort}");
+      builder.WebHost.UseUrls($"http://{configuration.HttpAddress}:{configuration.HttpPort}");
 
       setupServer(builder, configuration).WithHttpTransport();
 
       builder.Services.AddSingleton<McpShutdownService>();
 
       var app = builder.Build();
-      app.MapMcp();
+      app.MapMcp(configuration.HttpRoutePrefix ?? string.Empty);
       app.MapShutdownEndpoint();
       await app.RunAsync(cancellationToken).ConfigureAwait(false);
       return 0;

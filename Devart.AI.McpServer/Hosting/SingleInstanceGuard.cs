@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="SingleInstanceGuard.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -13,13 +13,13 @@ namespace Devart.AI.McpServer.Hosting
 {
   internal readonly struct SingleInstanceGuard : IDisposable
   {
-    private readonly Mutex _mutex;
+    private readonly Mutex mutex;
 
     public bool Acquired { get; }
 
     private SingleInstanceGuard(Mutex mutex, bool acquired)
     {
-      _mutex = mutex;
+      this.mutex = mutex;
       Acquired = acquired;
     }
 
@@ -40,6 +40,6 @@ namespace Devart.AI.McpServer.Hosting
       return new SingleInstanceGuard(mutex, acquired: true);
     }
 
-    public void Dispose() => _mutex?.Dispose();
+    public void Dispose() => this.mutex?.Dispose();
   }
 }

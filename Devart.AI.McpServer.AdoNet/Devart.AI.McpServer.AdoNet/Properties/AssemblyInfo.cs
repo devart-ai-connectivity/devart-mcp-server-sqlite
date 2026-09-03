@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="AssemblyInfo.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -19,7 +19,7 @@ namespace Devart.AI.McpServer.AdoNet.Properties
   internal static class ProductInfo
   {
     internal const string
-      ProductVersion = "1.0.0",
+      ProductVersion = "1.1.0",
       ProductFileVersion = $"{ProductVersion}.0",
       ProductFullName = "MCP Server AdoNet";
   }

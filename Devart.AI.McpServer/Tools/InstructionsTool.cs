@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="InstructionsTool.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -11,15 +11,15 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Devart.AI.McpServer.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using ModelContextProtocol.Server;
-using Devart.AI.McpServer.Interfaces;
 
 namespace Devart.AI.McpServer.Tools
 {
   public abstract class InstructionsTool(McpConfiguration serverConfiguration) : McpTool(serverConfiguration)
   {
-    protected abstract string InstructionsResourceName{ get; }
+    protected abstract string InstructionsResourceName { get; }
 
     protected override string Name => "instructions";
 
@@ -29,7 +29,7 @@ namespace Devart.AI.McpServer.Tools
 
     public Task<string> Execute(
       IServiceProvider services,
-      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(services, cancellationToken));
+      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(services, cancellationToken), services);
 
     protected virtual async Task<string> ExecuteAsync(
       IServiceProvider services,

@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="OdbcSqliteTools.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -7,8 +7,8 @@
 // --------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using ModelContextProtocol.Server;
 using Devart.AI.McpServer.Odbc.Sqlite.Tools;
+using ModelContextProtocol.Server;
 
 namespace Devart.AI.McpServer.Odbc.Sqlite
 {

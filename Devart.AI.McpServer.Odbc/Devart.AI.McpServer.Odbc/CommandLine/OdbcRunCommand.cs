@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="OdbcRunCommand.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -6,10 +6,10 @@
 // </copyright>
 // --------------------------------------------------------------------------
 
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Devart.AI.McpServer.CommandLine;
 using Devart.AI.McpServer.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Devart.AI.McpServer.Odbc.CommandLine
 {
@@ -17,15 +17,11 @@ namespace Devart.AI.McpServer.Odbc.CommandLine
   {
     protected override McpConfiguration CreateConfiguration() => new OdbcConfiguration();
 
-    protected virtual void SetupConnectionBuilder(IHostApplicationBuilder builder)
-    {
-      builder.Services.AddSingleton<IConnectionBuilder, OdbcConnectionBuilder>();
-    }
+    protected override string TechnologyId => "ODBC";
 
-    protected virtual void SetupMetadata(IHostApplicationBuilder builder)
-    {
-      builder.Services.AddSingleton<IMetadata, OdbcMetadata>();
-    }
+    protected virtual void SetupConnectionBuilder(IHostApplicationBuilder builder) => builder.Services.AddSingleton<IConnectionBuilder, OdbcConnectionBuilder>();
+
+    protected virtual void SetupMetadata(IHostApplicationBuilder builder) => builder.Services.AddSingleton<IMetadata, OdbcMetadata>();
 
     protected sealed override void ConfigureServices(IHostApplicationBuilder builder, McpConfiguration configuration)
     {

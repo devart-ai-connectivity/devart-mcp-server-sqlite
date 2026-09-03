@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="OdbcMetadata.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -21,24 +21,38 @@ namespace Devart.AI.McpServer.Odbc
 
     public string TablesSchemaName => OdbcConstants.TableSchema;
 
-    public (string name, string alias)[] TablesColumnsMapping
+    public MetadataColumn[] TablesColumnsMapping
       => [(OdbcConstants.TableSchema, McpResources.TablesTool_TableSchema),
           (OdbcConstants.TableName, McpResources.TablesTool_TableName),
-          (OdbcConstants.Remarks, McpResources.TablesTool_Remarks)];
+          (OdbcConstants.Remarks, McpResources.TablesTool_Remarks, false)];
+
+    public virtual string[] TablesRestrictions(string database) => null;
+
+    public virtual string[] ColumnsRestrictions(string database, string schema, string tableName)
+      => [DatabaseName(database), SchemaName(schema), tableName];
+
+    public virtual string[] IndexesRestrictions(string database, string schema, string tableName)
+      => [DatabaseName(database), SchemaName(schema), tableName];
+
+    public virtual string[] ForeignKeysRestrictions(string database, string schema, string tableName)
+      => [DatabaseName(database), SchemaName(schema), tableName];
+
+    public virtual string[] PrimaryKeysRestrictions(string database, string schema, string tableName)
+      => [DatabaseName(database), SchemaName(schema), tableName];
 
     public string ColumnsCollectionName => OdbcMetaDataCollectionNames.Columns;
 
-    public (string name, string alias)[] ColumnsColumnsMapping
+    public MetadataColumn[] ColumnsColumnsMapping
       => [(OdbcConstants.ColumnName, McpResources.ColumnsTool_ColumnNameHeader),
           (OdbcConstants.TypeName, McpResources.ColumnsTool_DataTypeHeader),
           (OdbcConstants.ColumnSize, McpResources.ColumnsTool_SizeHeader),
           (OdbcConstants.Nullable, McpResources.ColumnsTool_NullableHeader),
-          (OdbcConstants.ColumnDefinition, McpResources.ColumnsTool_DefaultValueHeader),
-          (OdbcConstants.Remarks, McpResources.ColumnsTool_DescriptionHeader)];
+          (OdbcConstants.ColumnDefinition, McpResources.ColumnsTool_DefaultValueHeader, false),
+          (OdbcConstants.Remarks, McpResources.ColumnsTool_DescriptionHeader, false)];
 
     public string IndexesCollectionName => OdbcMetaDataCollectionNames.Indexes;
 
-    public (string name, string alias)[] IndexesColumnsMapping
+    public MetadataColumn[] IndexesColumnsMapping
       => [(OdbcConstants.IndexName, McpResources.IndexesTool_IndexName),
           (OdbcConstants.IndexType, McpResources.IndexesTool_IndexType),
           (OdbcConstants.ColumnName, McpResources.IndexesTool_ColumnName),
@@ -46,7 +60,7 @@ namespace Devart.AI.McpServer.Odbc
 
     public string ForeignKeysCollectionName => OdbcConstants.ForeignKeysCollectionName;
 
-    public (string name, string alias)[] ForeignKeysColumnsMapping
+    public MetadataColumn[] ForeignKeysColumnsMapping
       => [(OdbcConstants.ForeignKeyFkName, McpResources.ForeignKeysTool_FkNameHeader),
           (OdbcConstants.ForeignKeyFkColumn, McpResources.ForeignKeysTool_FkColumnHeader),
           (OdbcConstants.ForeignKeyPkSchema, McpResources.ForeignKeysTool_PkSchemaHeader),
@@ -57,17 +71,17 @@ namespace Devart.AI.McpServer.Odbc
 
     public string PrimaryKeysCollectionName => OdbcConstants.PrimaryKeysCollectionName;
 
-    public (string name, string alias)[] PrimaryKeysColumnsMapping
+    public MetadataColumn[] PrimaryKeysColumnsMapping
       => [(OdbcConstants.PrimaryKeyName, McpResources.PrimaryKeysTool_PkNameHeader),
           (OdbcConstants.ColumnName, McpResources.PrimaryKeysTool_PkColumnHeader)];
 
     public string RoutinesCollectionName => OdbcMetaDataCollectionNames.Procedures;
 
-    public (string name, string alias)[] RoutinesColumnsMapping
+    public MetadataColumn[] RoutinesColumnsMapping
       => [(OdbcConstants.ProcedureSchema, McpResources.RoutinesTool_ProcedureSchema),
           (OdbcConstants.ProcedureName, McpResources.RoutinesTool_ProcedureName),
           (OdbcConstants.ProcedureType, McpResources.RoutinesTool_ProcedureType),
           (OdbcConstants.ProcedureParameters, McpResources.RoutinesTool_ProcedureParameters),
-          (OdbcConstants.Remarks, McpResources.RoutinesTool_Remarks)];
+          (OdbcConstants.Remarks, McpResources.RoutinesTool_Remarks, false)];
   }
 }

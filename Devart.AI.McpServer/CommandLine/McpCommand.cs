@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="McpCommand.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -10,17 +10,21 @@ using System;
 using System.CommandLine;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Devart.AI.McpServer.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Devart.AI.McpServer.CommandLine
 {
   public abstract class McpCommand : Command
   {
-    public McpCommand(string name, string alias, string description) : base(name, description)
+    public McpCommand(string name, string description) : base(name, description)
+    {
+      SetAction((result, cancellation) => DoActionAsync(result, cancellation));
+    }
+
+    public McpCommand(string name, string alias, string description) : this(name, description)
     {
       Aliases.Add(alias);
-      SetAction((result, cancellation) => DoActionAsync(result, cancellation));
     }
 
     protected virtual Task<int> DoActionAsync(ILogger logger, LogLevel logLevel, ParseResult parseResult, CancellationToken cancellationToken)

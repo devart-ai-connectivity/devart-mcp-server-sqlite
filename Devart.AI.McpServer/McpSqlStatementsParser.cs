@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="McpSqlStatementsParser.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -50,44 +50,25 @@ namespace Devart.AI.McpServer
     }
 
     private static StatementType GetStatementType(string statementText)
-    {
-      if (statementText.StartsWith(SelectKeyword, StringComparison.OrdinalIgnoreCase))
-      {
-        return StatementType.Select;
-      }
-      if (statementText.StartsWith(InsertKeyword, StringComparison.OrdinalIgnoreCase))
-      {
-        return StatementType.Insert;
-      }
-      if (statementText.StartsWith(UpdateKeyword, StringComparison.OrdinalIgnoreCase))
-      {
-        return StatementType.Update;
-      }
-      if (statementText.StartsWith(DeleteKeyword, StringComparison.OrdinalIgnoreCase))
-      {
-        return StatementType.Delete;
-      }
-      if (statementText.StartsWith(CreateKeyword, StringComparison.OrdinalIgnoreCase))
-      {
-        return StatementType.Create;
-      }
-      if (statementText.StartsWith(AlterKeyword, StringComparison.OrdinalIgnoreCase))
-      {
-        return StatementType.Alter;
-      }
-      if (statementText.StartsWith(DropKeyword, StringComparison.OrdinalIgnoreCase))
-      {
-        return StatementType.Drop;
-      }
-      if (statementText.StartsWith(CallKeyword, StringComparison.OrdinalIgnoreCase) ||
+      => statementText.StartsWith(SelectKeyword, StringComparison.OrdinalIgnoreCase)
+        ? StatementType.Select
+        : statementText.StartsWith(InsertKeyword, StringComparison.OrdinalIgnoreCase)
+        ? StatementType.Insert
+        : statementText.StartsWith(UpdateKeyword, StringComparison.OrdinalIgnoreCase)
+        ? StatementType.Update
+        : statementText.StartsWith(DeleteKeyword, StringComparison.OrdinalIgnoreCase)
+        ? StatementType.Delete
+        : statementText.StartsWith(CreateKeyword, StringComparison.OrdinalIgnoreCase)
+        ? StatementType.Create
+        : statementText.StartsWith(AlterKeyword, StringComparison.OrdinalIgnoreCase)
+        ? StatementType.Alter
+        : statementText.StartsWith(DropKeyword, StringComparison.OrdinalIgnoreCase)
+        ? StatementType.Drop
+        : statementText.StartsWith(CallKeyword, StringComparison.OrdinalIgnoreCase) ||
           statementText.StartsWith(ExecKeyword, StringComparison.OrdinalIgnoreCase) ||
-          statementText.StartsWith(ExecuteKeyword, StringComparison.OrdinalIgnoreCase))
-      {
-        return StatementType.Call;
-      }
-
-      return StatementType.Unknown;
-    }
+          statementText.StartsWith(ExecuteKeyword, StringComparison.OrdinalIgnoreCase)
+        ? StatementType.Call
+        : StatementType.Unknown;
 
     private static string GetNextStatement(string scriptText, ref int position)
     {

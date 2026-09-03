@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="McpLauncher.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -18,16 +18,18 @@ using Devart.AI.McpServer.CommandLine;
 
 namespace Devart.AI.McpServer
 {
-  public sealed class McpLauncher(params Command[] commands)
+  public sealed class McpLauncher(string description, params Command[] commands)
   {
-    private static Mutex _setupMutex;
+    private static Mutex SetupMutex;
 
-    private readonly IReadOnlyList<Command> _commands = commands ?? [];
+    public McpLauncher(params Command[] commands) : this(null, commands)
+    {
+    }
 
     public async Task<int> RunAsync(string[] args)
     {
-      _setupMutex = new Mutex(false, @$"Global\{Assembly.GetEntryAssembly()?.GetName().Name ?? Assembly.GetExecutingAssembly().GetName().Name}");
-      GC.KeepAlive(_setupMutex);
+      SetupMutex = new Mutex(false, @$"Global\{Assembly.GetEntryAssembly()?.GetName().Name ?? Assembly.GetExecutingAssembly().GetName().Name}");
+      GC.KeepAlive(SetupMutex);
 
       CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
       CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
@@ -44,8 +46,8 @@ namespace Devart.AI.McpServer
         cancellationTokenSource.Cancel();
       });
 
-      var rootCommand = new McpRootCommand();
-      foreach (var command in _commands)
+      var rootCommand = new McpRootCommand(description);
+      foreach (var command in commands ?? [])
       {
         rootCommand.Subcommands.Add(command);
       }

@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="IndexesTool.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -8,11 +8,13 @@
 
 using System;
 using System.ComponentModel;
+using System.Data;
+using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Devart.AI.McpServer.Extensions;
 using Devart.AI.McpServer.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Devart.AI.McpServer.Tools
 {
@@ -24,13 +26,29 @@ namespace Devart.AI.McpServer.Tools
 
     protected override Delegate ExecuteDefinition => Execute;
 
+    protected override async Task<DataTable> GetMetadataTable(
+      DbConnection connection,
+      string schema,
+      string tableName,
+      IServiceProvider services,
+      CancellationToken cancellationToken)
+    {
+      var metadata = services.GetRequiredService<IMetadata>();
+      return await connection
+        .GetSchemaAsync(
+          metadata.IndexesCollectionName,
+          metadata.IndexesRestrictions(connection.Database, schema, tableName),
+          cancellationToken)
+        .ConfigureAwait(false);
+    }
+
     public Task<string> Execute(
       [Description("Name of the schema.")]
       string schema,
       [Description("Name of the table.")]
       string tableName,
       IServiceProvider services,
-      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(schema, tableName, services, cancellationToken));
+      CancellationToken cancellationToken) => DoActionAsync(() => ExecuteAsync(schema, tableName, services, cancellationToken), services);
 
     protected virtual async Task<string> ExecuteAsync(
       string schema,
@@ -49,7 +67,7 @@ namespace Devart.AI.McpServer.Tools
         () => GetMetadataTable(connection, schema, tableName, services, cancellationToken)
       ).ConfigureAwait(false);
 
-      var markdownTable = table?.ToMarkdown(metadata.IndexesColumnsMapping);
+      var markdownTable = RequireMetadataTable(table, () => metadata.IndexesCollectionName).ToMarkdown(metadata.IndexesColumnsMapping);
       var quotedFullName = formatter.FormatName(schema, tableName, configuration, connection);
       var header = string.Format(McpResources.IndexesTool_OutputHeader, quotedFullName);
 

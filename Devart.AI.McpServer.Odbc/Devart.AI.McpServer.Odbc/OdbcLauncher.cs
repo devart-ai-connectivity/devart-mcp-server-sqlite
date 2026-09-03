@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------
 // <copyright file="OdbcLauncher.cs" company="Devart">
 //
 // Copyright (c) Devart. ALL RIGHTS RESERVED
@@ -7,6 +7,8 @@
 // --------------------------------------------------------------------------
 
 using System.CommandLine;
+using System.Linq;
+using Devart.AI.McpServer.CommandLine;
 using Devart.AI.McpServer.Odbc.CommandLine;
 
 namespace Devart.AI.McpServer.Odbc
@@ -17,8 +19,11 @@ namespace Devart.AI.McpServer.Odbc
     {
       var commands = new Command[productCommands.Length + 1];
       productCommands.CopyTo(commands, 0);
-      commands[productCommands.Length] = new OdbcConfigCommand();
-      return new McpLauncher(commands);
+      commands[productCommands.Length] = new OdbcConfigCommand(GetProductFullName(productCommands));
+      return new McpLauncher(OdbcResources.CommandLine_RootCommand, commands);
     }
+
+    private static string GetProductFullName(Command[] productCommands)
+      => productCommands.OfType<McpRunCommand>().FirstOrDefault()?.ProductFullName;
   }
 }
